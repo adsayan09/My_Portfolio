@@ -1,0 +1,16 @@
+# Stitch exports / design source archives
+*.zip
+stitch_export/
+stitch_original.html
+
+# Unreferenced legacy assets (superseded by inline <style> + Tailwind config in index.html)
+css/
+js/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Node / tooling
+node_modules/
+npm-debug.log*
