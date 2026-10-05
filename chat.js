@@ -17,6 +17,14 @@
   var REDUCED =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Touch devices: never steal focus. Autofocusing the composer on open made the
+     keyboard jump up and left the browser's own focus ring on the typing area. */
+  var TOUCH = !!(
+    window.matchMedia &&
+    (window.matchMedia("(hover: none) and (pointer: coarse)").matches ||
+      window.matchMedia("(max-width: 640px)").matches)
+  );
+
   /* ---------- profile facts, all taken from this site ---------- */
 
   var PROFILE = {
@@ -404,6 +412,10 @@
       return wrap;
     }
 
+    function focusComposer() {
+      if (!TOUCH) input.focus({ preventScroll: true });
+    }
+
     function ask(text) {
       if (busy) return;
       var clean = String(text || "").trim();
@@ -432,7 +444,7 @@
         renderChips(FOLLOWUPS[result.id] || WELCOME_CHIPS.slice(0, 3));
         sendBtn.disabled = false;
         busy = false;
-        input.focus({ preventScroll: true });
+        focusComposer();
       }, delay);
     }
 
@@ -446,7 +458,7 @@
       if (!thread.childElementCount) renderWelcome();
       window.setTimeout(function () {
         scrollDown();
-        input.focus({ preventScroll: true });
+        focusComposer();
       }, REDUCED ? 0 : 60);
     }
 
@@ -473,7 +485,7 @@
         if (what === "reset") {
           thread.innerHTML = "";
           renderWelcome();
-          input.focus({ preventScroll: true });
+          focusComposer();
         }
         if (what === "expand") {
           var on = panel.getAttribute("data-expanded") !== "true";
