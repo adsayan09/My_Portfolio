@@ -122,6 +122,12 @@
 
   .nav-scrolled .nav-progress { opacity: 1; }
 
+/* The nav's scroll progress line is desktop only. Below md the nav is just a
+   bar with a drawer button, and the animated line reads as stray movement. */
+@media (max-width: 767px) {
+  .nav-progress { display: none; }
+}
+
   /* ---------- DARK / LIGHT MODE CIRCULAR REVEAL (View Transitions) ---------- */
   @property --mask-size {
     syntax: "<length-percentage>";
