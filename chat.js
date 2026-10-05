@@ -175,7 +175,7 @@
     return (
       "You can reach me at <a href='mailto:" + PROFILE.email + "'>" + PROFILE.email + "</a>.\n\n" +
       "I'm based in " + PROFILE.location + " and " + PROFILE.availability.toLowerCase() + ", " +
-      "so remote collaboration works. There's also a CV on this site: <a href='cv.html'>cv.html</a>."
+      "so remote collaboration works. I can send a CV over email whenever you like."
     );
   }
 
