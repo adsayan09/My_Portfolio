@@ -1,0 +1,28 @@
+/* CursorGrid hero background.
+   The canvas spans the full viewport width so the hero's max-w-[1360px] cap never
+   shows an edge on wide screens. Pointer events pass straight through: the
+   listener lives on the hero section, so the grid never blocks the CTA buttons. */
+
+.hero-grid {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-grid__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Keep the hero copy above the canvas. */
+#hero > .grid {
+  position: relative;
+  z-index: 1;
+}
