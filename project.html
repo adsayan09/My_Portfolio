@@ -46,10 +46,21 @@
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       scroll-behavior: smooth;
       scroll-padding-top: 6rem;
       background-color: #F5F5F0;
       color: #111111;
+      /* AOS parks off-screen elements at translate3d(+/-100px,0,0). Below the
+         md breakpoint some stay parked, which spills past the viewport edge and
+         gives the page a horizontal scrollbar. `clip` contains that without
+         creating a scroll container, so sticky positioning keeps working. */
+      overflow-x: clip;
+    }
+    html.dark {
+      background-color: #0D0E11;
     }
   }
   ::-webkit-scrollbar { display: none; }
@@ -226,24 +237,168 @@
       transform: none;
     }
   }
+
+  @media (max-width: 640px) {
+    html, body {
+      overflow-x: hidden;
+      scroll-padding-top: 5rem;
+    }
+
+    body,
+    body > *,
+    header,
+    main,
+    footer,
+    section {
+      max-width: 100vw;
+    }
+
+    #site-nav > div {
+      height: 4.5rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    main {
+      padding-top: 4.5rem !important;
+    }
+
+    #project-root section {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
+    }
+
+    #project-root section > div,
+    footer > div {
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+    }
+
+    #project-root h1 {
+      font-size: 3rem !important;
+      line-height: 0.96 !important;
+      letter-spacing: 0 !important;
+      overflow-wrap: anywhere;
+    }
+
+    #project-root h2,
+    #project-root h3 {
+      letter-spacing: 0 !important;
+      overflow-wrap: anywhere;
+    }
+
+    #project-root .grid {
+      gap: 1.5rem !important;
+    }
+
+    #project-root [class*="py-16"],
+    #project-root [class*="sm:py-20"] {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+    }
+
+    #project-root [class*="mb-20"] {
+      margin-bottom: 3rem !important;
+    }
+
+    #project-root [class*="mb-14"] {
+      margin-bottom: 2rem !important;
+    }
+
+    #project-root figure {
+      border-radius: 1rem !important;
+    }
+
+    #project-root figure img {
+      max-height: 62vh;
+    }
+
+    #project-root a,
+    #project-root button {
+      max-width: 100%;
+    }
+
+    #project-root a.inline-flex,
+    #project-root button.inline-flex {
+      justify-content: center;
+      width: 100%;
+    }
+
+    #project-root dl > div,
+    #project-root [class*="p-6"] {
+      padding: 1.25rem !important;
+    }
+
+    #project-root .prose,
+    #project-root p,
+    #project-root figcaption,
+    #project-root dd,
+    #project-root li {
+      overflow-wrap: anywhere;
+    }
+
+    #project-root table {
+      font-size: 0.875rem;
+    }
+
+    #project-root th,
+    #project-root td {
+      white-space: normal;
+    }
+
+    footer > div {
+      align-items: flex-start !important;
+    }
+
+    footer .flex {
+      flex-wrap: wrap;
+      gap: 1rem !important;
+    }
+  }
+
+  @media (max-width: 374px) {
+    #project-root h1 {
+      font-size: 1.85rem !important;
+    }
+
+    .font-mono {
+      letter-spacing: 0.08em !important;
+    }
+  }
 </style>  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-white dark:selection:bg-accent-lime dark:selection:text-black min-h-screen flex flex-col"><div class="fixed top-0 left-0 w-full h-[2px] pointer-events-none z-[60]" id="scroll-progress"></div><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50 nav-blur bg-[#F5F5F0] dark:bg-[#0D0E11]/85 border-b border-[#E5E5E5] dark:border-[#23252C]/60 transition-shadow duration-300" id="site-nav"><div class="nav-progress"></div><div class="max-w-[1360px] mx-auto h-20 px-6 sm:px-10 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center gap-3"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow dark:hover:text-accent-lime transition-colors" href="index.html">ADSAYAN</a><span class="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#77736C] dark:text-[#8E919A] border-l border-[#E5E5E5] dark:border-[#24252B] pl-3 uppercase">SE &amp; Creative Dev</span></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="flex items-center gap-2 text-[#111111] dark:text-white hover:text-[#111111] dark:text-white transition-colors" href="index.html#hero"><span class="">Home</span></a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#about">About</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#selected-work">Projects</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#journey">Journey</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#contact">Contact</a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-9 h-9 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow dark:hover:border-accent-lime transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" class="md:hidden flex flex-col items-center justify-center w-9 h-9 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-white"></span><span class="w-4 h-[1px] bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-8 py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow dark:text-accent-lime" href="index.html#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
+  <link rel="stylesheet" href="chat.css">
+</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-white dark:selection:bg-accent-lime dark:selection:text-black min-h-screen flex flex-col"><div class="fixed top-0 left-0 w-full h-[2px] pointer-events-none z-[60]" id="scroll-progress"></div><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50 nav-blur bg-[#F5F5F0] dark:bg-[#0D0E11]/85 border-b border-[#E5E5E5] dark:border-[#23252C]/60 transition-shadow duration-300" id="site-nav"><div class="nav-progress"></div><div class="max-w-[1360px] mx-auto h-20 px-6 sm:px-10 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center gap-3"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow dark:hover:text-accent-lime transition-colors" href="index.html">ADSAYAN</a><span class="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#77736C] dark:text-[#8E919A] border-l border-[#E5E5E5] dark:border-[#24252B] pl-3 uppercase">SE &amp; Creative Dev</span></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="flex items-center gap-2 text-[#111111] dark:text-white hover:text-[#111111] dark:text-white transition-colors" href="index.html#hero"><span class="">Home</span></a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#about">About</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#selected-work">Projects</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#journey">Journey</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#contact">Contact</a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-10 h-10 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow dark:hover:border-accent-lime transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-drawer" class="md:hidden flex flex-col items-center justify-center w-10 h-10 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div aria-hidden="true" class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-6 sm:px-8 py-24 sm:py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><button aria-label="Close menu" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-md border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] text-[#111111] dark:text-white" id="mobile-drawer-close"><span class="material-symbols-outlined text-[20px]">close</span></button><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow dark:text-accent-lime py-2 block" href="index.html#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
     <div id="project-root" class="w-full"></div>
 <script src="projects.js"></script>
 <script src="render-project.js"></script>
-    </main><!-- Clean Minimal Copyright Footer --><footer class="w-full bg-[#EAEAEA] dark:bg-[#090A0D] border-t border-[#CCCCCC] dark:border-[#1C1E24] py-8"><div class="max-w-[1360px] mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div><span class="">© 2026 ADSAYAN. Software Engineering × Creative Design.</span></div><div class="flex items-center gap-6"><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://github.com" rel="noopener" target="_blank">GitHub</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://instagram.com" rel="noopener" target="_blank">Instagram</a></div></div></footer><script>
+    </main><!-- Clean Minimal Copyright Footer --><footer class="w-full bg-[#EAEAEA] dark:bg-[#090A0D] border-t border-[#CCCCCC] dark:border-[#1C1E24] py-8"><div class="max-w-[1360px] mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div><span class="">© 2026 ADSAYAN. Software Engineering × Creative Design.</span></div><div class="flex items-center gap-6"><a class="inline-block py-2 hover:text-[#111111] dark:text-white transition-colors" href="https://github.com" rel="noopener" target="_blank">GitHub</a><a class="inline-block py-2 hover:text-[#111111] dark:text-white transition-colors" href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a><a class="inline-block py-2 hover:text-[#111111] dark:text-white transition-colors" href="https://instagram.com" rel="noopener" target="_blank">Instagram</a></div></div></footer><script>
 
   // Mobile Menu
   const mobileTrigger = document.getElementById('mobile-menu-trigger');
   const mobileDrawer = document.getElementById('mobile-drawer');
+  const mobileDrawerClose = document.getElementById('mobile-drawer-close');
   if (mobileTrigger && mobileDrawer) {
+    const setDrawer = (open) => {
+      mobileDrawer.classList.toggle('translate-y-full', !open);
+      mobileDrawer.setAttribute('aria-hidden', String(!open));
+      mobileTrigger.setAttribute('aria-expanded', String(open));
+      // stop the page behind the drawer from scrolling while it is open
+      document.body.classList.toggle('overflow-hidden', open);
+    };
+
     mobileTrigger.addEventListener('click', () => {
-      mobileDrawer.classList.toggle('translate-y-full');
+      setDrawer(mobileDrawer.classList.contains('translate-y-full'));
     });
+    if (mobileDrawerClose) mobileDrawerClose.addEventListener('click', () => setDrawer(false));
     mobileDrawer.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileDrawer.classList.add('translate-y-full');
-      });
+      link.addEventListener('click', () => setDrawer(false));
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileDrawer.classList.contains('translate-y-full')) setDrawer(false);
+    });
+    // reset state if the viewport grows past the md breakpoint while open
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setDrawer(false);
     });
   }
 
@@ -324,7 +479,12 @@
     once: true,
     offset: 50,
     easing: 'ease-out-cubic',
+    // AOS holds off-screen elements at translate3d(+/-100px, 0, 0) until they
+    // scroll into view, which pushes them past the viewport edge on phones and
+    // creates a horizontal scrollbar. Off below md; the content is visible anyway.
+    disable: () => window.matchMedia('(max-width: 767px)').matches
   });
   AOS.refreshHard();
 </script>
+  <script src="chat.js"></script>
 </body></html>

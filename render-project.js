@@ -7,7 +7,7 @@ const esc = (s) =>
 const TAG_PILL =
   'px-3 py-1.5 rounded-full bg-white dark:bg-[#18191E] border border-[#E5E5E5] dark:border-[#24252B] text-xs font-mono text-[#111111] dark:text-white/90';
 const META_LABEL =
-  'font-mono text-[10px] uppercase tracking-[0.18em] text-[#77736C] dark:text-[#8E919A]';
+  'font-mono text-[11px] uppercase tracking-[0.18em] text-[#77736C] dark:text-[#8E919A]';
 const META_VALUE =
   'font-headline-sm text-sm font-semibold text-[#111111] dark:text-white mt-1 block';
 const CARD =
@@ -38,7 +38,7 @@ function buildSection(p, s) {
 function buildComparison(p) {
   const c = p.comparison;
   const head = c.head
-    .map((h, i) => `<th class="text-left font-mono text-[10px] uppercase tracking-[0.14em] text-[#77736C] dark:text-[#8E919A] font-normal ${i ? "text-center" : ""}">${h}</th>`)
+    .map((h, i) => `<th class="text-left font-mono text-[11px] uppercase tracking-[0.14em] text-[#77736C] dark:text-[#8E919A] font-normal ${i ? "text-center" : ""}">${h}</th>`)
     .join("");
   const body = c.rows
     .map(
@@ -125,7 +125,7 @@ function buildTests(p) {
   const head = t.head
     .map(
       (h, i) =>
-        `<th class="text-left font-mono text-[10px] uppercase tracking-[0.14em] text-[#77736C] dark:text-[#8E919A] font-normal ${i === t.head.length - 1 ? "text-center" : ""}">${h}</th>`
+        `<th class="text-left font-mono text-[11px] uppercase tracking-[0.14em] text-[#77736C] dark:text-[#8E919A] font-normal ${i === t.head.length - 1 ? "text-center" : ""}">${h}</th>`
     )
     .join("");
   const body = t.rows
@@ -134,7 +134,7 @@ function buildTests(p) {
         <td class="py-3 pr-4 font-mono text-xs text-[#2E7D32] dark:text-[#B5FF6D]">${r[0]}</td>
         <td class="py-3 pr-4 font-headline-sm text-sm font-semibold text-[#111111] dark:text-white">${r[1]}</td>
         <td class="py-3 pr-4 text-sm ${PROSE}">${r[2]}</td>
-        <td class="py-3 text-center"><span class="px-2.5 py-1 rounded-full bg-accent-glow/15 text-[#2E7D32] dark:text-[#B5FF6D] font-mono text-[10px] uppercase tracking-wider">${r[3]}</span></td>
+        <td class="py-3 text-center"><span class="px-2.5 py-1 rounded-full bg-accent-glow/15 text-[#2E7D32] dark:text-[#B5FF6D] font-mono text-[11px] uppercase tracking-wider">${r[3]}</span></td>
       </tr>`
     )
     .join("");
@@ -203,7 +203,7 @@ function buildGallery(p) {
             <img decoding="async" alt="${s.alt}" class="w-full h-auto max-h-[80vh] object-contain mx-auto" loading="lazy" src="${s.src}">
           </div>
           <div class="mt-4 flex items-baseline gap-3">
-            <span class="font-mono text-[10px] text-[#2E7D32] dark:text-[#B5FF6D]">${String(i + 1).padStart(2, "0")}</span>
+            <span class="font-mono text-[11px] text-[#2E7D32] dark:text-[#B5FF6D]">${String(i + 1).padStart(2, "0")}</span>
             <figcaption class="font-mono text-xs text-[#77736C] dark:text-[#8E919A]">${s.caption}</figcaption>
           </div>
         </figure>`
@@ -411,7 +411,7 @@ function render(slug) {
             .map(
               (s) => `<div class="bg-white dark:bg-[#121317] p-6 text-center">
             <div class="font-display-xl text-3xl sm:text-4xl font-extrabold tracking-tight text-[#2E7D32] dark:text-[#B5FF6D]">${s.value}</div>
-            <div class="font-mono text-[10px] uppercase tracking-[0.16em] text-[#77736C] dark:text-[#8E919A] mt-2">${s.label}</div>
+            <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-[#77736C] dark:text-[#8E919A] mt-2">${s.label}</div>
           </div>`
             )
             .join("")}
@@ -435,7 +435,36 @@ function render(slug) {
     </section>`;
 
   bindGallery();
+  markScrollableTables();
   if (window.AOS) window.AOS.refreshHard();
+}
+
+// Wide spec tables stay horizontally scrollable inside their wrapper. Without a
+// hint, a clipped column on a phone just looks like missing data, so reveal a
+// nudge only for the tables that actually overflow.
+function markScrollableTables() {
+  const HINT = 'scrollable-table';
+  document.querySelectorAll("div.overflow-x-auto").forEach((wrap) => {
+    const table = wrap.querySelector("table");
+    if (!table) return;
+    const hint = document.createElement("p");
+    hint.className =
+      "font-mono text-[11px] uppercase tracking-[0.16em] text-[#77736C] dark:text-[#8E919A] mt-2 md:hidden";
+    hint.dataset.tableHint = "true";
+    hint.textContent = "Scroll horizontally to see all columns \u2192";
+    const sync = () => {
+      const overflows = wrap.scrollWidth - wrap.clientWidth > 4;
+      hint.style.display = overflows ? "" : "none";
+      wrap.dataset.scrollable = String(overflows);
+    };
+    sync();
+    wrap.parentNode.insertBefore(hint, wrap.nextSibling);
+    wrap.addEventListener("scroll", sync, { passive: true });
+    if (window.ResizeObserver) {
+      new ResizeObserver(sync).observe(wrap);
+      new ResizeObserver(sync).observe(table);
+    }
+  });
 }
 
 render(new URLSearchParams(location.search).get("p") || PROJECT_ORDER[0]);
