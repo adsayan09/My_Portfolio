@@ -18,8 +18,8 @@
           "dark-text-muted": "#8E919A",
           "on-surface": "#F4F1EA",
           "border-subtle": "#23252C",
-          "accent-glow": "#B5FF6D",
-          "accent-bronze": "#CCA374",
+          "accent-glow": "#2E7D32",
+          "accent-lime": "#B5FF6D",
           "dark-surface": "#121317",
           "primary": "#F4F1EA",
           "dark-bg": "#0D0E11"
@@ -88,11 +88,13 @@
     width: 100%;
     transform: scaleX(0);
     transform-origin: 0 50%;
-    background: linear-gradient(90deg, #4F8A10, #B5FF6D);
+    background: linear-gradient(90deg, #2E7D32, #4E9A38);
     z-index: 60;
     pointer-events: none;
     will-change: transform;
   }
+  .dark #scroll-progress { background: linear-gradient(90deg, #2E7D32, #B5FF6D); }
+
   .nav-progress {
     position: absolute;
     left: 0;
@@ -101,10 +103,12 @@
     width: 100%;
     transform: scaleX(0);
     transform-origin: 0 50%;
-    background: linear-gradient(90deg, #4F8A10, #B5FF6D);
+    background: linear-gradient(90deg, #2E7D32, #4E9A38);
     opacity: 0;
     transition: opacity 300ms ease;
   }
+  .dark .nav-progress { background: linear-gradient(90deg, #2E7D32, #B5FF6D); }
+
   .nav-scrolled .nav-progress { opacity: 1; }
 
   /* ---------- DARK / LIGHT MODE CIRCULAR REVEAL (View Transitions) ---------- */
@@ -137,89 +141,98 @@
     transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   #theme-toggle:hover .material-symbols-outlined { transform: rotate(90deg); }
-</style>  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-black min-h-screen flex flex-col"><div class="fixed top-0 left-0 w-full h-[2px] pointer-events-none z-[60]" id="scroll-progress"></div><div class="fixed top-0 left-0 w-3 h-3 rounded-full bg-accent-glow pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 hidden lg:block transition-opacity duration-300 opacity-0" id="cursor-dot" style="left: 396px; top: 1011px;"></div><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50 nav-blur bg-[#F5F5F0] dark:bg-[#0D0E11]/85 border-b border-[#E5E5E5] dark:border-[#23252C]/60 transition-shadow duration-300" id="site-nav"><div class="nav-progress"></div><div class="max-w-[1360px] mx-auto h-20 px-6 sm:px-10 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center gap-3"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow transition-colors" href="#">ADSAYAN</a><span class="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#77736C] dark:text-[#8E919A] border-l border-[#E5E5E5] dark:border-[#24252B] pl-3 uppercase">SE &amp; Creative Dev</span></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="flex items-center gap-2 text-[#111111] dark:text-white hover:text-[#111111] dark:text-white transition-colors" href="#hero"><span class="w-1.5 h-1.5 rounded-full bg-accent-glow"></span><span class="">Home</span></a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="#about">About</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="#selected-work">Projects</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="#journey">Journey</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="#contact">Contact</a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-9 h-9 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" class="md:hidden flex flex-col items-center justify-center w-9 h-9 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-white"></span><span class="w-4 h-[1px] bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-8 py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow" href="#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
-    <section class="w-full py-24 sm:py-32 border-b border-[#E5E5E5] dark:border-[#23252C] bg-[#F5F5F0] dark:bg-[#0D0E11]">
-        <div class="max-w-[1360px] mx-auto px-6 sm:px-10">
-            <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#121317] text-[#111111] dark:text-white font-headline-sm text-xs uppercase tracking-wider font-semibold hover:bg-[#EAEAEA] dark:hover:bg-[#18191E] transition-all mb-12">
-                <span>&larr;</span><span>Back to Archive</span>
-            </a>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mb-16">
-                <div data-aos="fade-right" class="lg:col-span-8">
-                    <div class="flex items-center gap-2 font-mono text-xs text-[#4F8A10] dark:text-[#B5FF6D] mb-4">
-                        <span>[Development]</span><span>•</span><span>[Healthcare Portal]</span>
-                    </div>
-                    <h1 data-aos="fade-up" data-aos-delay="300" class="font-display-xl text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] text-[#111111] dark:text-white leading-[0.92] uppercase mb-8">
-                        MEDICARE PLUS
-                    </h1>
-                    <p class="font-body-md text-lg text-[#77736C] dark:text-[#8E919A] max-w-2xl leading-relaxed mb-8">
-                        A streamlined healthcare portal enabling patients to browse specialist schedules, book appointments in real-time, and manage consultations with an intuitive multi-step booking engine.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1.5 rounded-full bg-white dark:bg-[#18191E] border border-[#E5E5E5] dark:border-[#24252B] text-xs font-mono text-[#111111] dark:text-white/90">PHP</span>
-                        <span class="px-3 py-1.5 rounded-full bg-white dark:bg-[#18191E] border border-[#E5E5E5] dark:border-[#24252B] text-xs font-mono text-[#111111] dark:text-white/90">MySQL</span>
-                        <span class="px-3 py-1.5 rounded-full bg-white dark:bg-[#18191E] border border-[#E5E5E5] dark:border-[#24252B] text-xs font-mono text-[#111111] dark:text-white/90">UI/UX</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="rounded-2xl overflow-hidden border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] w-full mb-24 shadow-xl">
-                <div class="aspect-[21/9] overflow-hidden">
-                    <img loading="lazy" alt="Medicare Plus Hero" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-awmSXCM0UQCDy4m-CXTofn-9PfTZyhbTTj-fwc0UqHxPYJ6rZB5ggRlrwZU_74bCocgurX2_7yZvwGUG_AwRIzTxD9TNOJQqzccFwHJSWjVe5mTSVTlicgwWaoKZwGBuWcoqJr98doZK7yaiGQo6Bes54-f-ODNHmMJdKiexK9By2ttvIw1r4iB345ffOClJOzComCuqD8INRPUB-85GcDH4igmBD3x3H25e4bbrpxRZQLI1awd_qQ">
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-                <div class="lg:col-span-4">
-                    <h2 class="font-headline-sm text-2xl font-bold uppercase text-[#111111] dark:text-white mb-4">The Challenge</h2>
-                </div>
-                <div class="lg:col-span-8 flex flex-col gap-6 text-[#77736C] dark:text-[#8E919A] font-body-md text-base leading-relaxed">
-                    <p>
-                        Legacy healthcare systems often feature convoluted interfaces that frustrate patients and staff. The objective was to design and engineer a modern, frictionless booking experience from the ground up, ensuring high availability and seamless data flow to hospital backend records.
-                    </p>
-                    <p>
-                        We focused heavily on performance and accessibility, ensuring the application works flawlessly across mobile devices while maintaining stringent security standards for patient data. Architecture was deeply inspired by clean monolithic patterns, optimizing for speed and reliability.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    </main><!-- Clean Minimal Copyright Footer --><footer class="w-full bg-[#EAEAEA] dark:bg-[#090A0D] border-t border-[#CCCCCC] dark:border-[#1C1E24] py-8"><div class="max-w-[1360px] mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div><span class="">© 2026 ADSAYAN. Software Engineering × Creative Design.</span></div><div class="flex items-center gap-6"><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://github.com" rel="noopener" target="_blank">GitHub</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://instagram.com" rel="noopener" target="_blank">Instagram</a></div></div></footer><script>
-  // Cursor Follower
-  const cursor = document.getElementById('cursor-dot');
-  if (cursor) {
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      cursor.classList.remove('opacity-0');
-      cursor.classList.add('opacity-100');
-    });
-    document.addEventListener('mouseleave', () => {
-      cursor.classList.add('opacity-0');
-      cursor.classList.remove('opacity-100');
-    });
+
+  /* ---------- SCREENSHOT GALLERY EXPAND / COLLAPSE ----------
+     grid-template-rows 0fr -> 1fr animates to the natural content height,
+     so no fixed pixel height has to be guessed or recalculated on resize. */
+  #gallery-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 640ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 380ms ease;
+  }
+  #gallery-panel.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  #gallery-panel > .gallery-collapser {
+    overflow: hidden;
+    min-height: 0;
+  }
+  #gallery-panel.is-opening .gallery-item,
+  #gallery-panel.is-open .gallery-item {
+    opacity: 1;
+    transform: none;
+  }
+  .gallery-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.965);
+    transition:
+      opacity 540ms ease,
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+  }
+  /* figures lift slightly as the panel collapses */
+  #gallery-panel:not(.is-open) .gallery-item {
+    transition:
+      opacity 260ms ease,
+      transform 420ms cubic-bezier(0.4, 0, 1, 1);
+  }
+  .gallery-item img {
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 620ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .gallery-item img.is-loaded {
+    opacity: 1;
+    transform: none;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.035);
+  }
+  #gallery-toggle-icon {
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  
-    const mono = document.getElementById('monogram-container');
-    if(mono && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        mono.addEventListener('mousemove', (e) => {
-            const rect = mono.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width/2;
-            const y = e.clientY - rect.top - rect.height/2;
-            mono.querySelectorAll('.parallax-layer').forEach(layer => {
-                const speed = layer.getAttribute('data-speed');
-                layer.style.transform = `translate(${x * speed / 100}px, ${y * speed / 100}px)`;
-            });
-        });
-        mono.addEventListener('mouseleave', () => {
-            mono.querySelectorAll('.parallax-layer').forEach(layer => {
-                layer.style.transform = `translate(0,0)`;
-            });
-        });
+  /* ---------- INLINE CODE IN CASE-STUDY PROSE ---------- */
+  .prose-code, .prose p code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.875em;
+    padding: 0.1em 0.35em;
+    border-radius: 0.25rem;
+    background: rgba(46, 125, 50, 0.09);
+    color: #2E7D32;
+    white-space: nowrap;
+  }
+  .dark .prose-code, .dark .prose p code {
+    background: rgba(181, 255, 109, 0.12);
+    color: #B5FF6D;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #gallery-panel,
+    .gallery-item,
+    .gallery-item img,
+    #gallery-toggle-icon {
+      transition-duration: 1ms !important;
     }
-    
+    .gallery-item {
+      opacity: 1;
+      transform: none;
+    }
+    .gallery-item img {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-white dark:selection:bg-accent-lime dark:selection:text-black min-h-screen flex flex-col"><div class="fixed top-0 left-0 w-full h-[2px] pointer-events-none z-[60]" id="scroll-progress"></div><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50 nav-blur bg-[#F5F5F0] dark:bg-[#0D0E11]/85 border-b border-[#E5E5E5] dark:border-[#23252C]/60 transition-shadow duration-300" id="site-nav"><div class="nav-progress"></div><div class="max-w-[1360px] mx-auto h-20 px-6 sm:px-10 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center gap-3"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow dark:hover:text-accent-lime transition-colors" href="index.html">ADSAYAN</a><span class="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#77736C] dark:text-[#8E919A] border-l border-[#E5E5E5] dark:border-[#24252B] pl-3 uppercase">SE &amp; Creative Dev</span></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="flex items-center gap-2 text-[#111111] dark:text-white hover:text-[#111111] dark:text-white transition-colors" href="index.html#hero"><span class="">Home</span></a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#about">About</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#selected-work">Projects</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#journey">Journey</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#contact">Contact</a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-9 h-9 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow dark:hover:border-accent-lime transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" class="md:hidden flex flex-col items-center justify-center w-9 h-9 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-white"></span><span class="w-4 h-[1px] bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-8 py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow dark:text-accent-lime" href="index.html#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white" href="index.html#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
+    <div id="project-root" class="w-full"></div>
+<script src="projects.js"></script>
+<script src="render-project.js"></script>
+    </main><!-- Clean Minimal Copyright Footer --><footer class="w-full bg-[#EAEAEA] dark:bg-[#090A0D] border-t border-[#CCCCCC] dark:border-[#1C1E24] py-8"><div class="max-w-[1360px] mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div><span class="">© 2026 ADSAYAN. Software Engineering × Creative Design.</span></div><div class="flex items-center gap-6"><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://github.com" rel="noopener" target="_blank">GitHub</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a><a class="hover:text-[#111111] dark:text-white transition-colors" href="https://instagram.com" rel="noopener" target="_blank">Instagram</a></div></div></footer><script>
+
   // Mobile Menu
   const mobileTrigger = document.getElementById('mobile-menu-trigger');
   const mobileDrawer = document.getElementById('mobile-drawer');
@@ -312,5 +325,6 @@
     offset: 50,
     easing: 'ease-out-cubic',
   });
+  AOS.refreshHard();
 </script>
 </body></html>
