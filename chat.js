@@ -29,13 +29,21 @@
 
   var PROFILE = {
     name: "Adsayan",
-    role: "Software Engineering student working across code, UI/UX and visual design",
-    location: "Sri Lanka",
-    availability: "Available for internships and remote work",
+    role: "Software Engineer & Creative Developer",
+    title: "final-year Computing and Software Engineering student",
+    location: "Colombo, Sri Lanka",
+    timezone: "UTC+05:30",
+    availability: "open to a Software Engineering internship and remote work across European and US time zones",
     email: "pathmasuthanadsayan@gmail.com",
-    education: "Higher Diploma (HD) in Computing and Software Engineering at ICBT Campus",
-    objective: "Securing a Software Engineering or Creative Tech internship",
-    design: "22 works: 6 packaging labels, 7 promotional posters and 9 apparel prints"
+    education: "Higher Diploma in Computing and Software Engineering (2024-2026) at ICBT Campus, Colombo",
+    educationModules:
+      "CSE5009 Web Application Development, covering client-server architecture, relational schema design and REST APIs, and CSE5011 Mobile Application Development with native Android and Firebase",
+    al: "GCE Advanced Level, Mathematics stream, at Methodist Central College, Batticaloa (2023) with 2 A passes in Mathematics and Chemistry",
+    ol: "GCE Ordinary Level (2020) with 2 A, 5 B and 2 C",
+    objective: "Securing a Software Engineering internship where design matters as much as the code",
+    portfolio: "adsayan.vercel.app",
+    design:
+      "22 works across 6 packaging labels, 7 promotional posters and 9 apparel prints, plus a brand identity for PROT, a protein meal brand"
   };
 
   var FALLBACK =
@@ -89,10 +97,10 @@
   function answerAbout() {
     var count = ORDER.length || Object.keys(DATA).length;
     return (
-      "Hi, I'm " + PROFILE.name + ". " + PROFILE.role + ".\n\n" +
-      "I'm based in " + PROFILE.location + " and " + PROFILE.availability.toLowerCase() + ". " +
-      "I did my " + PROFILE.education + " and I'm working toward " +
-      PROFILE.objective.toLowerCase() + ".\n\n" +
+      "Hi, I'm " + PROFILE.name + " — " + PROFILE.role + " and a " + PROFILE.title + ".\n\n" +
+      "I'm based in " + PROFILE.location + " (" + PROFILE.timezone + ") and " + PROFILE.availability + ". " +
+      "I'm studying a " + PROFILE.education + ", where my work leans full-stack and native Android, " +
+      "with a design background in UI/UX, typography and branding.\n\n" +
       "This site documents " + count + " projects, plus a self-directed design archive of " +
       PROFILE.design + ".\n\nWhat would you like to know?"
     );
@@ -149,7 +157,7 @@
       seen.map(function (t) {
         return "• " + esc(t);
       }).join("\n") +
-      "\n\nOn the design side I also do packaging labels, posters and apparel prints."
+      "\n\nOn the design side I also do packaging labels, posters, apparel prints and brand identity work."
     );
   }
 
@@ -167,18 +175,19 @@
   function answerEducation() {
     return (
       PROFILE.education + ".\n\n" +
-      "That covers computational logic, object-oriented programming, algorithms and core web markup, " +
-      "followed by full-stack and mobile practicum work. I'm currently focused on " +
-      PROFILE.objective.toLowerCase() + "."
+      "Core modules: " + PROFILE.educationModules + ".\n\n" +
+      "Earlier: " + PROFILE.al + ", and before that " + PROFILE.ol + "."
     );
   }
 
   function answerJourney() {
     return (
       "Roughly where I've been:\n\n" +
-      "• <strong>2024</strong> — started the Higher Diploma in Computing and Software Engineering\n" +
-      "• <strong>2025</strong> — full-stack and mobile practicum: client-server platforms, relational schema design, REST APIs\n" +
-      "• <strong>2026</strong> — design systems and UI work alongside engineering\n" +
+      "• <strong>2020</strong> — " + PROFILE.ol + "\n" +
+      "• <strong>2023</strong> — GCE Advanced Level, Mathematics stream, 2 A passes\n" +
+      "• <strong>2024</strong> — started the Higher Diploma in Computing and Software Engineering at ICBT Campus\n" +
+      "• <strong>2025</strong> — full-stack and mobile practicum: relational schema design, REST APIs, native Android with Firebase\n" +
+      "• <strong>2026</strong> — design systems and UI work alongside engineering, plus the PROT brand identity\n" +
       "• <strong>Now</strong> — " + PROFILE.objective.toLowerCase()
     );
   }
@@ -186,15 +195,15 @@
   function answerContact() {
     return (
       "You can reach me at <a href='mailto:" + PROFILE.email + "'>" + PROFILE.email + "</a>.\n\n" +
-      "I'm based in " + PROFILE.location + " and " + PROFILE.availability.toLowerCase() + ", " +
+      "I'm based in " + PROFILE.location + " (" + PROFILE.timezone + ") and " + PROFILE.availability + ", " +
       "so remote collaboration works. You can grab my CV here — <a href='my%20cv.pdf'>Download CV</a>."
     );
   }
 
   function answerLocation() {
     return (
-      "I'm based in " + PROFILE.location + " and open to remote work.\n\n" +
-      "I'm " + PROFILE.availability.toLowerCase() + "."
+      "I'm based in " + PROFILE.location + " (" + PROFILE.timezone + ") and open to remote work.\n\n" +
+      "I'm " + PROFILE.availability + "."
     );
   }
 
@@ -208,7 +217,7 @@
 
   function answerAvailability() {
     return (
-      PROFILE.availability + ".\n\n" +
+      PROFILE.availability.charAt(0).toUpperCase() + PROFILE.availability.slice(1) + ".\n\n" +
       "My focus right now is " + PROFILE.objective.toLowerCase() + ". " +
       "The quickest route is email: <a href='mailto:" + PROFILE.email + "'>" + PROFILE.email + "</a>."
     );
