@@ -90,38 +90,107 @@
     }
   }
 
-  /* ---------- SCROLL PROGRESS BAR (sits right under the nav) ---------- */
-  #scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    width: 100%;
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    background: linear-gradient(90deg, #2E7D32, #4E9A38);
-    z-index: 60;
-    pointer-events: none;
-    will-change: transform;
+/* ---------- NAV PILL (devrajchatribin.com) ----------
+   The bar narrows and picks up a frosted background as you scroll. --nav-p is
+   driven from 0 to 1 by the scroll handler over the first 200px. */
+#site-nav {
+  background: transparent;
+}
+
+.nav-pill {
+  --nav-p: 0;
+  --nav-full: 1360px;
+  --nav-min: 820px;
+  max-width: calc(var(--nav-full) - (var(--nav-full) - var(--nav-min)) * var(--nav-p));
+  width: min(100%, calc(100% - (100% - var(--nav-min)) * var(--nav-p)));
+  border-radius: 9999px;
+  background-color: rgba(245, 245, 240, calc(var(--nav-p) * 0.85));
+  border: 1px solid rgba(17, 17, 17, calc(var(--nav-p) * 0.1));
+  -webkit-backdrop-filter: blur(calc(var(--nav-p) * 12px)) saturate(180%);
+  backdrop-filter: blur(calc(var(--nav-p) * 12px)) saturate(180%);
+  box-shadow: 0 6px 20px rgba(17, 17, 17, calc(var(--nav-p) * 0.07)),
+    inset 0 1px 0 rgba(255, 255, 255, calc(var(--nav-p) * 0.9));
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .nav-pill {
+  background-color: rgba(13, 14, 17, calc(var(--nav-p) * 0.8));
+  border-color: rgba(255, 255, 255, calc(var(--nav-p) * 0.12));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, calc(var(--nav-p) * 0.45)),
+    inset 0 1px 0 rgba(255, 255, 255, calc(var(--nav-p) * 0.14));
+}
+
+/* Diagonal text roll on the desktop links. */
+.nav-roll__box {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.nav-roll__face {
+  display: block;
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-roll__face--out {
+  position: absolute;
+  inset: 0;
+  color: #111111;
+  transform: translateY(110%) skewY(12deg);
+}
+
+.dark .nav-roll__face--out {
+  color: #ffffff;
+}
+
+.nav-roll:hover .nav-roll__face--in,
+.nav-roll:focus-visible .nav-roll__face--in {
+  transform: translateY(-110%) skewY(12deg);
+}
+
+.nav-roll:hover .nav-roll__face--out,
+.nav-roll:focus-visible .nav-roll__face--out {
+  transform: translateY(0) skewY(0);
+}
+
+.nav-roll:focus-visible {
+  outline: 2px solid var(--tw-accent-lime, #B5FF6D);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-roll__face {
+    transition: none !important;
   }
-  .dark #scroll-progress { background: linear-gradient(90deg, #2E7D32, #B5FF6D); }
+}
 
-  .nav-progress {
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    height: 2px;
-    width: 100%;
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    background: linear-gradient(90deg, #2E7D32, #4E9A38);
-    opacity: 0;
-    transition: opacity 300ms ease;
+/* Below md the bar stays full width because there is no room to narrow, and
+   the glass is permanent rather than scroll-driven. */
+@media (max-width: 767px) {
+  #site-nav {
+    background: transparent;
+    padding: 8px 12px 0;
   }
-  .dark .nav-progress { background: linear-gradient(90deg, #2E7D32, #B5FF6D); }
 
-  .nav-scrolled .nav-progress { opacity: 1; }
+  /* Liquid glass: frosted backdrop, saturation boost, specular top edge. */
+  #site-nav .nav-pill {
+    max-width: none;
+    width: 100%;
+    border-radius: 20px;
+    background-color: rgba(245, 245, 240, 0.55);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 6px 20px rgba(17, 17, 17, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
 
+  .dark #site-nav .nav-pill {
+    background-color: rgba(13, 14, 17, 0.55);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+}
   /* ---------- DARK / LIGHT MODE CIRCULAR REVEAL (View Transitions) ---------- */
   @property --mask-size {
     syntax: "<length-percentage>";
@@ -367,7 +436,7 @@
   }
 </style>  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="chat.css">
-</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-white dark:selection:bg-accent-lime dark:selection:text-black min-h-screen flex flex-col"><div class="fixed top-0 left-0 w-full h-[2px] pointer-events-none z-[60]" id="scroll-progress"></div><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50 nav-blur bg-[#F5F5F0] dark:bg-[#0D0E11]/85 border-b border-[#E5E5E5] dark:border-[#23252C]/60 transition-shadow duration-300" id="site-nav"><div class="nav-progress"></div><div class="max-w-[1360px] mx-auto h-20 px-6 sm:px-10 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center gap-3"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow dark:hover:text-accent-lime transition-colors" href="index.html">ADSAYAN</a><span class="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#77736C] dark:text-[#8E919A] border-l border-[#E5E5E5] dark:border-[#24252B] pl-3 uppercase">SE &amp; Creative Dev</span></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="flex items-center gap-2 text-[#111111] dark:text-white hover:text-[#111111] dark:text-white transition-colors" href="index.html#hero"><span class="">Home</span></a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#about">About</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#selected-work">Projects</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#journey">Journey</a><a class="text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:text-white transition-colors" href="index.html#contact">Contact</a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-10 h-10 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow dark:hover:border-accent-lime transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-drawer" class="md:hidden flex flex-col items-center justify-center w-10 h-10 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div aria-hidden="true" class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-6 sm:px-8 py-24 sm:py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><button aria-label="Close menu" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-md border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] text-[#111111] dark:text-white" id="mobile-drawer-close"><span class="material-symbols-outlined text-[20px]">close</span></button><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow dark:text-accent-lime py-2 block" href="index.html#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
+</head><body class="bg-[#F5F5F0] dark:bg-dark-bg text-[#111111] dark:text-on-surface font-body-md antialiased selection:bg-accent-glow selection:text-white dark:selection:bg-accent-lime dark:selection:text-black min-h-screen flex flex-col"><!-- 1. NAVIGATION BAR (Clean & Minimal like devrajchatribin.com) --><header class="fixed top-0 left-0 w-full z-50" id="site-nav"><div class="nav-pill max-w-[1360px] mx-auto h-16 sm:h-20 px-5 sm:px-6 flex items-center justify-between relative"><!-- Left: Monogram / Brand mark --><div class="flex items-center"><a class="font-headline-sm text-2xl font-bold tracking-tight text-[#111111] dark:text-white hover:text-accent-glow dark:hover:text-accent-lime transition-colors" href="index.html">ADSAYAN</a></div><!-- Center: Minimal subtle navigation links --><nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 items-center gap-8 text-[14px] font-medium tracking-wide"><a class="nav-roll text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:hover:text-white transition-colors" href="index.html#hero"><span class="nav-roll__box"><span class="nav-roll__face nav-roll__face--in">Home</span><span class="nav-roll__face nav-roll__face--out" aria-hidden="true">Home</span></span></a><a class="nav-roll text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:hover:text-white transition-colors" href="index.html#about"><span class="nav-roll__box"><span class="nav-roll__face nav-roll__face--in">About</span><span class="nav-roll__face nav-roll__face--out" aria-hidden="true">About</span></span></a><a class="nav-roll text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:hover:text-white transition-colors" href="index.html#selected-work"><span class="nav-roll__box"><span class="nav-roll__face nav-roll__face--in">Projects</span><span class="nav-roll__face nav-roll__face--out" aria-hidden="true">Projects</span></span></a><a class="nav-roll text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:hover:text-white transition-colors" href="index.html#journey"><span class="nav-roll__box"><span class="nav-roll__face nav-roll__face--in">Journey</span><span class="nav-roll__face nav-roll__face--out" aria-hidden="true">Journey</span></span></a><a class="nav-roll text-[#77736C] dark:text-[#8E919A] hover:text-[#111111] dark:hover:text-white transition-colors" href="index.html#contact"><span class="nav-roll__box"><span class="nav-roll__face nav-roll__face--in">Contact</span><span class="nav-roll__face nav-roll__face--out" aria-hidden="true">Contact</span></span></a></nav><!-- Right: Availability Status & Theme Icon --><div class="flex items-center gap-4"><button aria-label="Toggle mode" class="w-10 h-10 rounded-full border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] flex items-center justify-center text-[#111111] dark:text-white hover:border-accent-glow dark:hover:border-accent-lime transition-colors" id="theme-toggle"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><button aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-drawer" class="md:hidden flex flex-col items-center justify-center w-10 h-10 border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] rounded-md gap-1" id="mobile-menu-trigger"><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span><span class="w-4 h-[1px] bg-[#111111] dark:bg-white"></span></button></div></div></header><!-- Mobile Drawer --><div aria-hidden="true" class="fixed inset-0 z-40 bg-[#F5F5F0] dark:bg-[#0D0E11] flex flex-col justify-between px-6 sm:px-8 py-24 sm:py-28 transition-transform duration-300 translate-y-full md:hidden" id="mobile-drawer"><button aria-label="Close menu" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-md border border-[#E5E5E5] dark:border-[#24252B] bg-white dark:bg-[#18191E] text-[#111111] dark:text-white" id="mobile-drawer-close"><span class="material-symbols-outlined text-[20px]">close</span></button><nav class="flex flex-col gap-6 text-2xl font-headline-sm font-semibold uppercase"><a class="text-accent-glow dark:text-accent-lime py-2 block" href="index.html#hero">Home</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#about">About</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#selected-work">Projects</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#journey">Journey</a><a class="text-[#111111] dark:text-white/80 hover:text-[#111111] dark:text-white py-2 block" href="index.html#contact">Contact</a></nav><div class="flex flex-col gap-3 pt-6 border-t border-[#E5E5E5] dark:border-[#23252C] font-mono text-xs text-[#77736C] dark:text-[#8E919A]"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-glow"></span><span class="">Based in Sri Lanka — Global Availability</span></div></div></div><main class="w-full flex-1 pt-20">
     <div id="project-root" class="w-full"></div>
 <script src="projects.js"></script>
 <script src="render-project.js"></script>
@@ -442,20 +511,14 @@
     });
   }
 
-  // Scroll progress bar + nav shadow on scroll
-  const progressBar = document.getElementById('scroll-progress');
+  // Nav pill: narrows and frosts over the first 200px of scroll
   const nav = document.getElementById('site-nav');
-  const navProgress = nav ? nav.querySelector('.nav-progress') : null;
+  const navPill = nav ? nav.querySelector('.nav-pill') : null;
   let ticking = false;
 
   const onScroll = () => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = scrollable > 0 ? Math.min(scrollTop / scrollable, 1) : 0;
-
-    if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
-    if (navProgress) navProgress.style.transform = `scaleX(${progress})`;
-    if (nav) nav.classList.toggle('nav-scrolled', scrollTop > 8);
+    if (navPill) navPill.style.setProperty('--nav-p', Math.min(scrollTop / 200, 1).toFixed(3));
 
     ticking = false;
   };
