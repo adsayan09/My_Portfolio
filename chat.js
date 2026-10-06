@@ -221,7 +221,7 @@
     { id: "projects", re: /\b(projects?|portfolio|your work|case stud(y|ies)|what have you built|what did you build)\b/i, run: answerProjects },
     { id: "skills", re: /\b(skills?|stack|technolog\w+|tools?|what can you do|tech( stack)?|languages?|frameworks?)\b/i, run: answerSkills },
     { id: "design", re: /\b(graphic design|design work|poster|posters|labels?|packaging|apparel|prints?|tshirt|t-?shirt|typograph\w+|illustrat\w+)\b/i, run: answerDesign },
-    { id: "education", re: /\b(education|stud(y|ying)|school|college|university|icbt|qualification|course|degree|diploma)\b/i, run: answerEducation },
+    { id: "education", re: /\b(education|stud(y|ied|ying)|school|college|university|icbt|qualification|course|degree|diploma)\b/i, run: answerEducation },
     { id: "journey", re: /\b(journey|timeline|experience|background|how did you start|how long)\b/i, run: answerJourney },
     { id: "why", re: /\b(why (should i |i |we )?(hire|choose|pick) you|what makes you different|your strength)\b/i, run: answerWhy },
     { id: "contact", re: /\b(contact|email|reach out|get in touch|hire|message you|resume|cv)\b/i, run: answerContact },
@@ -230,17 +230,19 @@
   ];
 
   var FOLLOWUPS = {
-    greeting: ["What projects have you built?", "What are your skills?", "How can I contact you?"],
-    about: ["What projects have you built?", "What are your skills?", "Where are you based?"],
-    projects: ["Tell me about Shima RMS", "Tell me about your graphic design", "What are your skills?"],
-    skills: ["What projects have you built?", "What is your design work?", "Where did you study?"],
-    design: ["Tell me about apparel prints", "What projects have you built?", "What are your skills?"],
-    education: ["What is your journey so far?", "What are your skills?", "What projects have you built?"],
-    journey: ["What projects have you built?", "Where did you study?", "What are your skills?"],
-    contact: ["Are you available for internships?", "Where are you based?", "What are your skills?"],
-    location: ["Are you available for internships?", "How can I contact you?", "What projects have you built?"],
-    availability: ["How can I contact you?", "What are your skills?", "What projects have you built?"],
-    why: ["What projects have you built?", "What are your skills?", "How can I contact you?"]
+    greeting: ["My projects", "My skills", "Contact me"],
+    about: ["My projects", "My skills", "Where I'm based"],
+    projects: ["My SHIMA RMS project", "My design work", "My skills"],
+    skills: ["My projects", "My design work", "Where I studied"],
+    design: ["My apparel prints", "My projects", "My skills"],
+    education: ["My journey", "My skills", "My projects"],
+    journey: ["My projects", "Where I studied", "My skills"],
+    contact: ["My availability", "Where I'm based", "My skills"],
+    location: ["My availability", "Contact me", "My projects"],
+    availability: ["Contact me", "My skills", "My projects"],
+    why: ["My projects", "My skills", "Contact me"],
+    project: ["My design work", "My skills", "Contact me"],
+    fallback: ["About me", "My projects", "My skills"]
   };
 
   function matchProject(text) {
@@ -348,12 +350,12 @@
   /* ---------- behaviour ---------- */
 
   var WELCOME_CHIPS = [
-    "What projects have you built?",
-    "Tell me about yourself",
-    "What are your skills?",
-    "What is your graphic design work?",
-    "Where did you study?",
-    "How can I contact you?"
+    "My projects",
+    "About me",
+    "My skills",
+    "My design work",
+    "Where I studied",
+    "Contact me"
   ];
 
   function init() {
