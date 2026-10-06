@@ -229,20 +229,34 @@
     { id: "availability", re: /\b(available|availability|internship|opportunity|looking for|freelance)\b/i, run: answerAvailability },
   ];
 
+  var CHIPS = {
+    projects: { t: "My projects", l: "See what I built", s: "What projects have you built?" },
+    about: { t: "About me", l: "Who I am", s: "tell me about yourself" },
+    skills: { t: "My skills", l: "My stack and tools", s: "What are your skills?" },
+    design: { t: "My design work", l: "Graphics and prints", s: "What is your graphic design work?" },
+    education: { t: "My education", l: "Where I studied", s: "Where did you study?" },
+    contact: { t: "Contact me", l: "How to reach me", s: "How can I contact you?" },
+    location: { t: "Where I'm based", l: "My location", s: "Where are you based?" },
+    availability: { t: "My availability", l: "Internships and remote", s: "Are you available for internships?" },
+    journey: { t: "My journey", l: "How I got here", s: "What is your journey so far?" },
+    shima: { t: "My SHIMA RMS project", l: "Recruitment system", s: "Tell me about Shima RMS" },
+    apparel: { t: "My apparel prints", l: "Nine garment prints", s: "Tell me about apparel prints" }
+  };
+
   var FOLLOWUPS = {
-    greeting: ["My projects", "My skills", "Contact me"],
-    about: ["My projects", "My skills", "Where I'm based"],
-    projects: ["My SHIMA RMS project", "My design work", "My skills"],
-    skills: ["My projects", "My design work", "Where I studied"],
-    design: ["My apparel prints", "My projects", "My skills"],
-    education: ["My journey", "My skills", "My projects"],
-    journey: ["My projects", "Where I studied", "My skills"],
-    contact: ["My availability", "Where I'm based", "My skills"],
-    location: ["My availability", "Contact me", "My projects"],
-    availability: ["Contact me", "My skills", "My projects"],
-    why: ["My projects", "My skills", "Contact me"],
-    project: ["My design work", "My skills", "Contact me"],
-    fallback: ["About me", "My projects", "My skills"]
+    greeting: [CHIPS.projects, CHIPS.about, CHIPS.contact],
+    about: [CHIPS.projects, CHIPS.skills, CHIPS.location],
+    projects: [CHIPS.shima, CHIPS.design, CHIPS.skills],
+    skills: [CHIPS.projects, CHIPS.design, CHIPS.education],
+    design: [CHIPS.apparel, CHIPS.projects, CHIPS.skills],
+    education: [CHIPS.journey, CHIPS.skills, CHIPS.projects],
+    journey: [CHIPS.projects, CHIPS.education, CHIPS.skills],
+    contact: [CHIPS.availability, CHIPS.location, CHIPS.skills],
+    location: [CHIPS.availability, CHIPS.contact, CHIPS.projects],
+    availability: [CHIPS.contact, CHIPS.skills, CHIPS.projects],
+    why: [CHIPS.projects, CHIPS.skills, CHIPS.contact],
+    project: [CHIPS.design, CHIPS.skills, CHIPS.contact],
+    fallback: [CHIPS.about, CHIPS.projects, CHIPS.skills]
   };
 
   function matchProject(text) {
@@ -349,13 +363,14 @@
 
   /* ---------- behaviour ---------- */
 
+  /* Each chip: t = topic (what you read), l = one-line description,
+     s = the question actually sent to reply(). */
   var WELCOME_CHIPS = [
-    "My projects",
-    "About me",
-    "My skills",
-    "My design work",
-    "Where I studied",
-    "Contact me"
+    { t: "About me", l: "Who I am", s: "tell me about yourself" },
+    { t: "My projects", l: "See what I built", s: "What projects have you built?" },
+    { t: "My skills", l: "My stack and tools", s: "What are your skills?" },
+    { t: "My design work", l: "Graphics and prints", s: "What is your graphic design work?" },
+    { t: "Contact me", l: "How to reach me", s: "How can I contact you?" }
   ];
 
   function init() {
@@ -385,12 +400,20 @@
 
     function renderChips(list) {
       chips.innerHTML = "";
-      list.forEach(function (label, i) {
+      list.forEach(function (c, i) {
         var chip = document.createElement("button");
         chip.type = "button";
         chip.className = "chat-chip";
         chip.style.setProperty("--i", String(i));
-        chip.textContent = label;
+        chip.dataset.send = c.s;
+        var title = document.createElement("span");
+        title.className = "chat-chip-title";
+        title.textContent = c.t;
+        var label = document.createElement("span");
+        label.className = "chat-chip-label";
+        label.textContent = c.l;
+        chip.appendChild(title);
+        chip.appendChild(label);
         chips.appendChild(chip);
       });
     }
@@ -505,7 +528,7 @@
         return;
       }
       var chip = event.target.closest(".chat-chip");
-      if (chip) ask(chip.textContent);
+      if (chip) ask(chip.dataset.send || chip.textContent);
     });
 
     form.addEventListener("submit", function (event) {
