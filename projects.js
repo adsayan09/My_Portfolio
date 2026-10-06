@@ -1197,7 +1197,178 @@ const PROJECTS = {
       { src: "projects/graphic-design/img/tee-mikes-20250923-160621-0000.jpg", alt: "Apparel print with bold graphic treatment", caption: "Print 08 &mdash; bold shape, minimal detail" },
       { src: "projects/graphic-design/img/tee-20260510-223711.jpg", alt: "Apparel graphic print design", caption: "Print 09 &mdash; latest addition to the set" }
     ]
+  },
+  "prot-brand": {
+    slug: "prot-brand",
+    index: "07",
+    title: "PROT — BRAND IDENTITY",
+    eyebrow: ["Brand Identity", "Packaging"],
+    category: "Logo &amp; Packaging Identity for a Protein Meal Brand",
+    summary:
+      "PROT is a protein meal brand I am building. I designed the logomark and applied it to a packaging mockup so the identity is judged on the product, the way a customer actually meets it, instead of just on a blank page.",
+    tags: ["Brand Identity", "Logomark", "Packaging", "Illustrator", "Typography"],
+    meta: [
+      { label: "SCOPE", value: "Logomark &amp; Packaging Mockup" },
+      { label: "TOOLS", value: "Illustrator &amp; Photoshop" },
+      { label: "BRAND", value: "Self-initiated" },
+      { label: "PIECES", value: "Logo + mockup" }
+    ],
+    stats: [
+      { value: "01", label: "Brand Concept" },
+      { value: "02", label: "Deliverables" },
+      { value: "Own", label: "Brand" },
+      { value: "01", label: "Range-Leading Mark" }
+    ],
+    hero: {
+      src: "projects/graphic-design/img/prot-logo.jpg",
+      alt: "PROT protein meal brand logomark",
+      constrained: true,
+      caption: "PROT logomark &mdash; the mark for a protein meal brand"
+    },
+
+    sections: [
+      {
+        id: "idea",
+        num: "01",
+        heading: "The Idea",
+        body: [
+          "PROT is a protein meal brand of my own, so this logo had a different pressure than client work — it is the face of something I actually want to sell, not just a piece to include in a portfolio.",
+          "I wanted an identity that could sit on a food product and still feel like a brand rather than a label someone stuck on at the end."
+        ]
+      },
+      {
+        id: "role",
+        num: "02",
+        heading: "My Role",
+        body: [
+          "Everything: the brand name, the logomark, the packaging direction and the mockup itself.",
+          "Because it is my own brand I could afford to be strict — the logo had to work alone, in small sizes and on the container, with nothing else to lean on."
+        ]
+      },
+      {
+        id: "process",
+        num: "03",
+        heading: "The Process",
+        body: [
+          "I started with the mark because every other asset follows from it. The name is short, so the symbol needed to carry the memory of the brand rather than relying on the wordmark to do all the work.",
+          "Once the mark was fixed I built the packaging mockup around it, because a logo that only looks right in a portfolio has not been tested. Printing it onto the product is where it earns its place."
+        ]
+      },
+      {
+        id: "design",
+        num: "04",
+        heading: "Design",
+        body: [
+          "The brief was a protein meal brand, so the identity leans into clean, functional shapes — the same qualities the food promises.",
+          "I kept the palette tight and the type quiet next to the mark. On packaging there is a lot of nutritional copy fighting for space, and the logo should be the calm part of the label, not another voice."
+        ]
+      },
+      {
+        id: "result",
+        num: "05",
+        heading: "Result",
+        body: [
+          "Two deliverables that anchor the brand: the logomark and the packaging mockup it sits on together.",
+          "The mockup is where the identity is really judged — the mark has to hold up on a real container, next to product claims and nutrition information."
+        ]
+      },
+      {
+        id: "learned",
+        num: "06",
+        heading: "What I Learned",
+        body: [
+          "Designing for my own brand made me edit harder. There is no client to blame when something is off, so a weak idea cannot be hidden behind a brief.",
+          "I also got a proper respect for mockups as a testing tool. A logo on a blank page almost always looks good; the same logo on a product sometimes does not."
+        ]
+      }
+    ],
+
+    featureGrid: {
+      heading: "Identity System",
+      groups: [
+        {
+          role: "The Mark",
+          points: [
+            "Short name, carried by the symbol",
+            "A single mark that works at small sizes",
+            "Quiet type next to a strong logomark",
+            "Tight palette that survives printing",
+            "Designed to own its space on a label"
+          ]
+        },
+        {
+          role: "Application",
+          points: [
+            "Identity tested on a packaging mockup",
+            "Designed alongside nutritional copy",
+            "One range-leading mark, not a logo family",
+            "Reads as a food brand, not a tech logo",
+            "Mockup doubles as the portfolio hero"
+          ]
+        },
+        {
+          role: "Tools",
+          points: [
+            "Illustrator for vector logomark work",
+            "Photoshop for the packaging composite",
+            "Shared margin and colour logic",
+            "Export prepared for print and screen",
+            "All assets stored locally in the project"
+          ]
+        }
+      ]
+    },
+
+    security: [
+      "Original logomark artwork, no templates",
+      "Design files retained for range expansion",
+      "Palette locked tight enough to work one-tone",
+      "Mark checked at brand scale and product scale"
+    ],
+
+    comparison: {
+      heading: "Logo on Packaging",
+      caption: "What an identity on food packaging has to survive, and how the PROT mark is built to handle it",
+      head: ["Constraint", "Effect", "Handled By"],
+      rows: [
+        ["Small formats", "Detail reads as noise", "Simple, confident mark forms"],
+        ["Label copy", "Claims compete for attention", "Quiet wordmark, restrained palette"],
+        ["Print reproduction", "Fine detail drops out", "Bold shapes, no fragile hairlines"],
+        ["Product context", "The mark sits on the package", "Tested on the packaging mockup"]
+      ]
+    },
+
+    tests: {
+      heading: "How I Checked The Identity",
+      body:
+        "I tested the mark the way a customer meets it — small, and on the product rather than flat on a monitor. The mockup is the test: if the logo survives the packaging, the rest of the label can stay quiet around it.",
+      head: ["ID", "Element", "Criterion", "Approach"],
+      rows: [
+        ["B01", "Mark weight", "Reads at a glance", "Solid, simple geometry"],
+        ["B02", "Sizes", "Survives small formats", "Form holds at thumbnail"],
+        ["B03", "Palette discipline", "Works single-tone", "Tight colours, no gradients"],
+        ["B04", "Packaging context", "Sits beside label copy", "Checked in the mockup"],
+        ["B05", "Ownership", "Feels like one brand", "One mark, used consistently"]
+      ],
+    },
+
+    roadmap: [
+      { label: "Packaging suite", note: "Extend the identity across the full meal range at scale." },
+      { label: "Touchpoints", note: "Carry the identity onto an ordering and social presence." },
+      { label: "Physical sampling", note: "Print the mockup to check the mark on a real container." }
+    ],
+
+    galleryOpen: true,
+    galleryNoun: "deliverables",
+    galleryKicker: "The Set",
+    galleryTitle: "Logo &amp; Mockup",
+    galleryNote: "The two deliverables that anchor the PROT identity — the logomark and the packaging it lives on.",
+
+    gallery: [
+      { src: "projects/graphic-design/img/prot-logo.jpg", alt: "PROT protein meal brand logomark", caption: "Logo &mdash; the primary logomark for the PROT brand" },
+      { src: "projects/graphic-design/img/prot-packaging-mockup.jpg", alt: "PROT protein meal packaging mockup", caption: "Packaging mockup &mdash; the identity applied to the product" }
+    ]
   }
 };
 
-const PROJECT_ORDER = ["shima-rms", "medicare-plus", "techcare-services", "packaging-labels", "promotional-posters", "apparel-prints"];
+const PROJECT_ORDER = ["shima-rms", "medicare-plus", "techcare-services", "packaging-labels", "promotional-posters", "apparel-prints", "prot-brand"];

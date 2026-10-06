@@ -159,7 +159,8 @@
       "It's split into three case studies on this site:\n" +
       "• <a href='" + projectLink("packaging-labels") + "'>Product Labels</a> — container and jar label artwork\n" +
       "• <a href='" + projectLink("promotional-posters") + "'>Promotional Posters</a> — product, event and institutional campaigns\n" +
-      "• <a href='" + projectLink("apparel-prints") + "'>Apparel Prints</a> — streetwear and institutional prints"
+      "• <a href='" + projectLink("apparel-prints") + "'>Apparel Prints</a> — streetwear and institutional prints\n\n" +
+      "There is also a brand identity I designed for PROT, a protein meal brand of mine — <a href='" + projectLink("prot-brand") + "'>you can see the logo and packaging here</a>."
     );
   }
 
