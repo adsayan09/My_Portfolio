@@ -87,11 +87,14 @@
   /* ---------- answer builders ---------- */
 
   function answerAbout() {
+    var count = ORDER.length || Object.keys(DATA).length;
     return (
       "Hi, I'm " + PROFILE.name + ". " + PROFILE.role + ".\n\n" +
       "I'm based in " + PROFILE.location + " and " + PROFILE.availability.toLowerCase() + ". " +
-      "I document " + DATA.length + " projects on this site and keep a self-directed design archive of " + PROFILE.design + ".\n\n" +
-      "What would you like to know?"
+      "I did my " + PROFILE.education + " and I'm working toward " +
+      PROFILE.objective.toLowerCase() + ".\n\n" +
+      "This site documents " + count + " projects, plus a self-directed design archive of " +
+      PROFILE.design + ".\n\nWhat would you like to know?"
     );
   }
 
@@ -214,7 +217,7 @@
 
   var INTENTS = [
     { id: "greeting", re: /^(hi|hey|hello|yo|hola|good (morning|afternoon|evening))\b/i, run: answerAbout },
-    { id: "about", re: /\b(who are you|about you|introduce|your name|tell me about yourself|who is adsayan|what do you do)\b/i, run: answerAbout },
+    { id: "about", re: /\b(who are you|who is adsayan|about (you|yourself|me|myself)|tell me about (you|yourself|me|myself)|introduce yourself|introduce|your name|what do you do)\b/i, run: answerAbout },
     { id: "projects", re: /\b(projects?|portfolio|your work|case stud(y|ies)|what have you built|what did you build)\b/i, run: answerProjects },
     { id: "skills", re: /\b(skills?|stack|technolog\w+|tools?|what can you do|tech( stack)?|languages?|frameworks?)\b/i, run: answerSkills },
     { id: "design", re: /\b(graphic design|design work|poster|posters|labels?|packaging|apparel|prints?|tshirt|t-?shirt|typograph\w+|illustrat\w+)\b/i, run: answerDesign },
@@ -346,6 +349,7 @@
 
   var WELCOME_CHIPS = [
     "What projects have you built?",
+    "Tell me about yourself",
     "What are your skills?",
     "What is your graphic design work?",
     "Where did you study?",
