@@ -6,11 +6,11 @@ const PROJECTS = {
     eyebrow: ["Full-Stack System", "Multi-Tenant RBAC"],
     category: "Foreign Employment Agency Recruitment Management System",
     summary:
-      "A multi-tenant recruitment management system for an SLBFE-licensed foreign employment agency, built to move a candidate through a six-stage deployment pipeline &mdash; registration, documentation, medical, training, visa and deployment. Eight distinct roles share one interface through Postgres row-level security, with a trilingual AI assistant answering candidate questions and an append-only audit trail over every privileged action.",
+      "I built this recruitment system for an agency that sends workers abroad. It follows one person through every stage — registration, documents, medical, training, visa, deployment — so nobody has to guess where a candidate is stuck. Eight kinds of user share the same app, and each one only sees what they are meant to see.",
     tags: ["Next.js 16", "TypeScript", "Supabase", "Postgres RLS", "Tailwind 4", "Gemini AI"],
     meta: [
       { label: "CLIENT", value: "Shima International Agency" },
-      { label: "ROLE", value: "Architecture, Full-Stack &amp; UI Design" },
+      { label: "ROLE", value: "Full-Stack Development, Database &amp; UI Design" },
       { label: "STACK", value: "Next.js 16 &middot; React 19 &middot; Supabase &middot; TypeScript" },
       { label: "STATUS", value: "In active development" }
     ],
@@ -29,49 +29,95 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "brief",
+        id: "idea",
         num: "01",
-        heading: "The Problem",
+        heading: "The Idea",
         body: [
-          "A foreign employment agency moves a person through six gated stages &mdash; registration, documentation, medical, training, visa, deployment &mdash; where each stage blocks the next and a missed document can strand a candidate weeks before departure. Doing that on spreadsheets and paper files means no one can answer simple questions: where is this person stuck, which documents are outstanding, who approved this, what does this sub-agent still get paid.",
-          "Shima International Agency operates under an SLBFE licence with sub-agents and overseas employers attached, so the system had to serve four separate audiences at once without any of them seeing each other's data. A candidate sees their own file. A sub-agent sees only candidates they referred and their own commission ledger. Recruiters see the whole pipeline. Employers post vacancies and review matches. Finance sees receipts but not medical data.",
-          "That requirement &mdash; eight roles, four portals, one database, zero leakage &mdash; is what shaped every technical decision that followed."
+,
+          "A foreign employment agency moves one person through six stages, and each stage blocks the next. If a document goes missing three weeks before a flight, someone needs to notice that early. Most agencies track this on spreadsheets and paper files, which means nobody can answer simple questions like where is this person stuck, or who approved this change.",
+,
+          "Shima International wanted that in one place. They also have sub-agents and overseas employers attached, so the system had to serve four different audiences without letting any of them see each other's data. That requirement is what decided most of what I built."
+,
         ]
       },
       {
-        id: "architecture",
+        id: "role",
         num: "02",
-        heading: "Security as the Foundation",
+        heading: "My Role",
         body: [
-          "The central decision was enforcing access control in the database rather than in application code. Client-side route checks are trivially bypassed, so authorisation was pushed down into Postgres row-level security: RLS is enabled on all thirteen tables, and policies resolve the caller's role through a SQL function reading their JWT claims.",
-          "The policies are written per role, not per screen. A candidate can select their own row in <code>candidates</code> and nothing else. A sub-agent can additionally select rows where they are the referring agent. Staff roles widen that. Admin-only surfaces &mdash; the user directory, audit log, password queue &mdash; are gated again in the policy itself. Because the rule lives in the database, a new page added later cannot accidentally bypass it.",
-          "Three hardening passes followed the initial schema: fixing role resolution, protecting role columns from self-escalation, and correcting document-vault visibility. Audit logging was designed in from the start rather than retrofitted, since privileged actions on candidate records are exactly what an agency needs to be able to account for."
+,
+          "I built this on my own — the database, the interface, the permission model and the AI assistant. I also did the diagrams and the setup documentation.",
+,
+          "The part that took the most time was deciding who should be able to see what. It would have been easier to build the screens first and add permissions afterwards, but that approach falls apart as soon as there are eight roles to keep apart."
+,
         ]
       },
       {
-        id: "ai",
+        id: "process",
         num: "03",
-        heading: "The AI Layer",
+        heading: "The Process",
         body: [
-          "Candidates ask the same operational questions constantly: what documents are still needed, where is my visa, when is my medical. Answering them through office staff does not scale, and most candidates would not know to ask.",
-          "The assistant is a Gemini-backed endpoint with the agency's own process knowledge injected as a grounded system instruction &mdash; GAMCA medical sequencing, SLBFE training requirements, embassy stamping timelines, and what to bring to a clinic appointment. Conversation history is passed through so follow-up questions resolve against earlier turns, and the model is instructed to say so when it does not know rather than invent an answer about a real person's deployment.",
-          "It is deliberately scoped to process knowledge rather than candidate records. Answers that concern an individual's file should come from the database, not from a language model."
+,
+          "I started with the data model, because the stages are the whole system. Once the tables for candidates, documents and deployments existed, most of the screens were a matter of showing the right rows to the right person.",
+,
+          "Then I built it in layers: schema and roles first, then the four portals, then document uploads and the audit log, and the assistant last. Testing every role against the same screens turned up most of the bugs."
+,
         ]
       },
       {
-        id: "craft",
+        id: "design",
         num: "04",
-        heading: "Interface &amp; i18n",
+        heading: "Design",
         body: [
-          "The interface is one app shell with a role-aware sidebar &mdash; eight roles route to one of four portals, and navigation items resolve per role rather than being duplicated per layout. Data-heavy screens use a shared table component built on TanStack Table, giving search, sorting and pagination consistently across every list in the system instead of reimplemented per page.",
-          "The second requirement was language. Candidates are recruited across Sri Lanka, so the entire interface runs in English, Sinhala and Tamil from a single typed dictionary of 225 keys. Adding a language means adding one dictionary object &mdash; components read keys, never strings &mdash; and an admin surface edits translations against the key table directly.",
-          "Accessibility and motion preferences are respected throughout: the theme respects <code>prefers-color-scheme</code>, animation respects <code>prefers-reduced-motion</code>, and focus states are preserved rather than suppressed."
+,
+          "It is one app shell with a sidebar that changes depending on your role, so a candidate and an admin use the same layout but see different things. Data-heavy screens share a single table component, which meant search, sorting and pagination behaved the same everywhere instead of being rebuilt on each page.",
+,
+          "Candidates are recruited across Sri Lanka, so the whole interface runs in English, Sinhala and Tamil from one dictionary of 225 keys. Components read keys and never raw strings, so adding a language means adding one object."
+,
+        ]
+      },
+      {
+        id: "development",
+        num: "05",
+        heading: "Development",
+        body: [
+,
+          "The main decision was putting access control in the database instead of in the interface. Hiding a button is easy to bypass, so I wrote Postgres row-level security policies instead. They are enabled on all thirteen tables and work out the user's role from their JWT claims.",
+,
+          "Writing the policies per role rather than per screen means a page I add later cannot accidentally skip them. It took three passes to get right: fixing how the role was resolved, stopping a user changing their own role column, and correcting document visibility.",
+,
+          "The assistant is a Gemini endpoint with the agency's own process knowledge written into the system instruction. I deliberately kept it away from candidate records — anything about a specific person's file should come from the database, not from a language model."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "06",
+        heading: "Result",
+        body: [
+,
+          "It replaces spreadsheets and paper tracking for the agency. A recruiter can open a candidate and see which document is missing, who approved a change and when. Sub-agents see only the candidates they referred, plus their own commission ledger.",
+,
+          "It is still in development. The finance and reporting screens are running on mocked data until I finish those queries."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "07",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned that permissions are a data problem, not a UI problem. Writing the security policies early meant the screens afterwards were straightforward.",
+,
+          "I also got better at deciding what not to build. The AI assistant was the tempting feature, but the audit log and the document rules were what the agency actually needed every day."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "Capability by Role",
+      heading: "What Each Role Can Do",
       groups: [
         {
           role: "Candidate",
@@ -107,7 +153,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "Authorisation is enforced in Postgres, not in the interface &mdash; a policy cannot be bypassed by a crafted request.",
+      "Permissions are enforced in Postgres rather than in the interface, so a crafted request cannot skip them.",
     security: [
       "Row-level security enabled on all 13 tables",
       "Role resolved from JWT claims via SQL function",
@@ -134,9 +180,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "Verification",
+      heading: "How I Verified This",
       body:
-        "Playwright drives a route-health suite across thirty-one authenticated screens, asserting each responds successfully, renders, and exposes enabled interactive elements &mdash; catching broken routes and render failures across all four portals. The authorisation model itself is verified at the database layer, where policies can be asserted directly with and without a matching role. Honest scope: the UI suite is smoke-level, not end-to-end business-flow coverage, and the finance and reporting screens are still on mocked data pending their Supabase queries.",
+        "Playwright runs a route-health check across thirty-one signed-in screens, checking that each one loads and that its interactive elements are enabled. That caught broken routes more than once. It is smoke-level coverage rather than full business-flow testing, and the permission rules are checked separately at the database level, where they can be tested without a browser.",
       head: ["ID", "Layer", "Coverage", "Result"],
       rows: [
         ["V01", "Routing", "31 authenticated routes respond and render", "Pass"],
@@ -175,7 +221,7 @@ const PROJECTS = {
     eyebrow: ["Development", "Healthcare Portal"],
     category: "Hospital Appointment Booking &amp; Records System",
     summary:
-      "A database-driven healthcare web application for MediCare Plus, a private provider of general and specialist care. Patients browse doctor profiles, book appointments against live availability, and download medical reports. Doctors and administrators work from dedicated dashboards behind role-based access control.",
+      "I built this for MediCare Plus, a private clinic. Patients can find a doctor, book an open time slot and download their reports, while doctors and admins work in their own dashboards. It was my first full-stack project where I had to design the screens as well as build them.",
     tags: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
     meta: [
       { label: "CLIENT", value: "MediCare Plus" },
@@ -193,45 +239,93 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "brief",
+        id: "idea",
         num: "01",
-        heading: "The Brief",
+        heading: "The Idea",
         body: [
-          "MediCare Plus provides general consultations, specialist treatment, diagnostic services and emergency care. As demand for digital healthcare services grew, the provider needed to replace phone-and-paper scheduling with a system that let patients, doctors and administrators work from one integrated platform.",
-          "The brief was to build a database-driven dynamic web application rather than a brochure site. Patients had to register, find the right specialist, book a real available slot and reach their own medical reports afterwards. Doctors needed their day-to-day schedule and patient messaging in one place. Administrators needed to be the single point of control for doctors, patients and services."
+,
+          "The brief was an appointment system for MediCare Plus, a private clinic. Patients needed to see which doctors were free and book a slot. Doctors needed to see their day. The clinic needed to manage both without the two getting in each other's way.",
+,
+          "Before I started I looked at how the Apollo Clinics, Mayo Clinic and NHS websites handle booking online. I wanted to know what already worked before deciding what to build."
+,
         ]
       },
       {
-        id: "research",
+        id: "role",
         num: "02",
-        heading: "Competitive Analysis",
+        heading: "My Role",
         body: [
-          "Before designing anything I analysed three live healthcare platforms &mdash; Apollo Hospitals, Mayo Clinic and the NHS &mdash; comparing them across appointment booking, doctor profiles, service information, search, patient portal and mobile responsiveness. All three supported booking, so booking was table stakes rather than a differentiator.",
-          "The useful differences were elsewhere. Apollo carried the deepest doctor profiles, including specialisation, experience and consultation fee. Mayo Clinic led on information density and readability. The NHS, serving the widest and oldest audience, drove the accessibility decisions that shaped this project: larger type, simpler navigation and unambiguous content order."
+,
+          "I did the interface design and the PHP/MySQL build on my own for this module. That covered the wireframes, the database, the pages for all three roles, and the test plan.",
+,
+          "It was an assessed piece of work, so part of the job was being able to show what I had tested and explain why."
+,
+        ]
+      },
+      {
+        id: "process",
+        num: "03",
+        heading: "The Process",
+        body: [
+,
+          "I sketched the pages on paper first, then built the database around the booking flow, because everything else depends on appointments being saved and read back correctly. After that it was mostly forms and dashboards.",
+,
+          "I wrote the test plan before I finished the build, so I was not just testing whatever happened to be broken by then."
+,
         ]
       },
       {
         id: "design",
-        num: "03",
-        heading: "Interface Design",
+        num: "04",
+        heading: "Design",
         body: [
-          "The interface follows four principles carried through every page: consistency of layout and style, obvious affordances on navigation and buttons, accessible contrast and type sizes, and a responsive layout that adapts from phone to desktop. Bootstrap handled the responsive grid so the same markup serves all three breakpoints.",
-          "The palette is deliberately restrained &mdash; blue for trust and clinical professionalism, white for cleanliness, light grey to separate background sections. Six pages were designed and built: Home, Doctor Listing, Appointment Booking, and separate dashboards for Patient, Doctor and Admin."
+,
+          "Three roles means three different starting points, so the navigation changes per role. I kept the underlying layout identical between them, so the only thing that changes is what you can actually reach.",
+,
+          "The booking flow got the most attention, because choosing a doctor, choosing a slot and confirming is three separate steps and it is easy to lose someone halfway through."
+,
         ]
       },
       {
-        id: "build",
-        num: "04",
-        heading: "Under the Hood",
+        id: "development",
+        num: "05",
+        heading: "Development",
         body: [
-          "The front end is HTML, CSS and vanilla JavaScript on Bootstrap, with JavaScript carrying the interactive layer &mdash; client-side form validation, doctor search filters, and dynamic content updates. The back end is PHP on MySQL, split across a small set of focused scripts: an entry point, authentication, a database layer, and one dashboard per role.",
-          "The database stores login credentials and doctor/patient records in a Users table and booking data in an Appointments table. Because the system holds identifiable patient information, security was treated as a first-class requirement rather than an afterthought: password encryption, role-based access control, input validation on every write path, and error handling that fails closed."
+,
+          "PHP and MySQL, with Bootstrap handling the layout. Every protected page checks the session and the role on the server rather than only in the page, and all form input is validated before it reaches the database.",
+,
+          "Passwords are hashed instead of stored as plain text. That part is basic, but I did not want to leave it out just because it was not the interesting bit."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "06",
+        heading: "Result",
+        body: [
+,
+          "Patients can register, find a doctor by specialisation, book an open slot, see their appointment history and download their reports. Doctors can confirm, reschedule or cancel appointments and upload reports for patients. Admins manage doctor and patient records.",
+,
+          "Five test scenarios were defined in the plan and all five pass, including appointment booking and report download."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "07",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned that designing the screens first made the build much faster. Writing the booking flow out on paper meant I barely redesigned anything while coding.",
+,
+          "I also learned how much work accessibility is if you leave it to the end. I added focus states and keyboard support late, and that is the part I would do earlier next time."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "Capabilities by Role",
+      heading: "What Each Role Can Do",
       groups: [
         {
           role: "Patient",
@@ -266,7 +360,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "Patient data required these controls as baseline, not enhancement.",
+      "Patient details are sensitive, so I treated these as the minimum rather than something to add later.",
     security: [
       "Password encryption at rest",
       "Role-based access control on every protected route",
@@ -288,9 +382,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "Testing &amp; Evaluation",
+      heading: "How I Tested This",
       body:
-        "Validation ran at three levels: functional testing to confirm each feature behaves correctly, usability testing on how easily users complete tasks, and user acceptance testing with real users. Five scenarios were defined up front in the test plan, then two were documented end to end.",
+        "I tested this in three ways: checking each feature actually works, asking people whether they could finish the tasks easily, and a short acceptance check with real users. Five scenarios were written into the test plan and two are documented end to end.",
       head: ["ID", "Feature", "Expected Result", "Result"],
       rows: [
         ["T01", "User Login", "User successfully logs into system", "Pass"],
@@ -324,7 +418,7 @@ const PROJECTS = {
     eyebrow: ["Mobile App", "Service Booking"],
     category: "On-Demand Device Repair &amp; Service Booking",
     summary:
-      "A native Android application for booking electronic device repairs. Customers register, browse the repair service catalogue, search by category and submit a repair request against a description of the fault. Firebase Authentication and Realtime Database handle accounts, bookings and notifications, with every input validated before it reaches the database.",
+      "I built this Android app for booking device repairs. Customers browse the service list, describe what is wrong with their device and submit a request, and a technician picks it up and updates the status as the repair moves along. Firebase handles the accounts and the live updates.",
     tags: ["Android Java", "XML", "Firebase", "Android Studio"],
     meta: [
       { label: "CLIENT", value: "TechCare Services" },
@@ -342,45 +436,93 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "brief",
+        id: "idea",
         num: "01",
-        heading: "The Brief",
+        heading: "The Idea",
         body: [
-          "Electronic device repair was still being arranged over phone calls and paper notebooks. Technicians found work by word of mouth, customers had no way to confirm a repair had actually been booked, and once a job was finished neither side kept a record.",
-          "TechCare Services was built as a native Android application that puts that whole journey on the phone. A customer registers, browses the repair services on offer, books a repair against a description of the fault, and follows the status of the work. The module required a full delivery rather than a prototype &mdash; platform research, UML and database design, interface design, the working application, a formal test pass, and both user and technical documentation."
+,
+          "TechCare Services repairs phones and laptops, and they were taking bookings over the phone. I wanted an app where a customer could pick a service, describe what is wrong with the device and follow the repair as it happens.",
+,
+          "It was also a mobile development module, so part of the point was learning how Android apps are actually put together rather than only reading about it."
+,
         ]
       },
       {
-        id: "research",
+        id: "role",
         num: "02",
-        heading: "Platform Selection",
+        heading: "My Role",
         body: [
-          "The platform decision was made against reach and toolchain rather than preference. Android was chosen over iOS primarily on reach: it is open-source, runs across multiple manufacturers rather than Apple hardware alone, and carries the larger global market share. For a service business that is decisive &mdash; customers can install the app on whatever phone they already own.",
-          "The IDE decision followed the same logic. Android Studio was selected over Xcode because it offers the easier Firebase integration this project depends on, a mature XML layout editor for the interface layer, and support for Windows, Linux and macOS rather than macOS alone. Android's flexibility also made it the more practical choice for a service built around heterogeneous hardware."
+,
+          "I designed the screens and wrote the Java. Firebase Authentication, the Realtime Database, the input validation and the UML diagrams were all mine.",
+,
+          "I also wrote the technical documentation at the end, which turned out to be a useful way of finding the gaps I had left."
+,
+        ]
+      },
+      {
+        id: "process",
+        num: "03",
+        heading: "The Process",
+        body: [
+,
+          "I made the screens on paper first, then drew the ER and UML diagrams, then started coding. Deciding what each screen needed from the database before writing any Java saved me a lot of rewriting later.",
+,
+          "I wrote six test cases against the finished app, pairing a valid action with an invalid one for each module so I could show that the validation works and not just the happy path."
+,
         ]
       },
       {
         id: "design",
-        num: "03",
-        heading: "Interface Design",
+        num: "04",
+        heading: "Design",
         body: [
-          "Six screens were designed and built: Splash, Login, Registration, Home, Booking and Profile. The splash screen carries branding and sets the first impression of the application. Login and Registration handle authentication with inline validation. Home presents the repair catalogue as a RecyclerView of cards, so long service lists scroll efficiently rather than inflating the layout. Booking captures the fault description and submits the request, and Profile shows the customer's own details with logout.",
-          "The screens follow the Android convention of one clear task per Activity, with navigation between them handled by Intents. That keeps every screen a focused, independently testable unit instead of one monolithic Activity, which is what made the six-case test pass practical to write."
+,
+          "Six screens in total: login, register, the service catalogue with search, the booking form, the customer's job list, and the technician's job list. I kept it to that because more screens meant more to test.",
+,
+          "Services are shown as cards rather than a plain list, since the catalogue is the screen people use most and it needs to be quick to scan."
+,
         ]
       },
       {
-        id: "build",
-        num: "04",
-        heading: "Under the Hood",
+        id: "development",
+        num: "05",
+        heading: "Development",
         body: [
-          "Java carries all application logic, validation and backend behaviour, while XML defines every layout. That separation keeps presentation independent of logic and makes the interface straightforward to restyle. Firebase supplies both Authentication, handling secure email-and-password sign-in, and Realtime Database storage for user records, repair bookings and notifications, with full create, read, update and delete implemented against it.",
-          "Input validation was treated as a security requirement rather than polish. Login, Registration and Booking all validate before anything is written, so empty fields and malformed email addresses are rejected on the device instead of being persisted. That behaviour was then confirmed against a written test plan covering both the valid and the invalid path through each module."
+,
+          "Java with XML layouts. Firebase Authentication handles the accounts and the Realtime Database holds bookings and status, so a status change shows up for the customer without them refreshing.",
+,
+          "Validation runs before anything is written to the database, and each authenticated task sits in its own Activity so they do not bleed into each other."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "06",
+        heading: "Result",
+        body: [
+,
+          "A working booking flow end to end. A customer registers, finds a service, submits the fault along with their device details, and watches the status change as the technician moves the job along.",
+,
+          "All six test cases pass, covering both valid submissions and rejected input."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "07",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned that the Realtime Database is genuinely useful for this kind of job. I did not expect live updates to be that quick to set up.",
+,
+          "I also got better at estimating. I planned for two screens and ended up building six, which meant the last few were done in a hurry."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "Capabilities by Role",
+      heading: "What Each Role Can Do",
       groups: [
         {
           role: "Customer",
@@ -415,7 +557,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "Credentials and repair history are sensitive, so these controls were specified before implementation rather than added afterwards.",
+      "Passwords and repair history are personal information, so I set these up as I went rather than adding them at the end.",
     security: [
       "Firebase Authentication for email and password accounts",
       "Client-side validation on login, registration and booking",
@@ -441,9 +583,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "Testing &amp; Evaluation",
+      heading: "How I Tested This",
       body:
-        "A test plan of six cases was written against the built application, deliberately pairing a valid path with an invalid one for each module so that both the success behaviour and the validation behaviour were proven. All six passed.",
+        "I wrote six test cases against the finished app, pairing a valid action with an invalid one for each module so I could show that validation works and not just the happy path. All six pass.",
       head: ["ID", "Feature", "Expected Result", "Result"],
       rows: [
         ["TC01", "Login", "Correct credentials &rarr; login successful", "Pass"],
@@ -478,13 +620,13 @@ const PROJECTS = {
     eyebrow: ["Print Craft", "Small Format"],
     category: "Packaging &amp; Label Design",
     summary:
-      "Six container labels across skincare, food and personal care, built around one rule: the product name wins, the supporting claims support it, and everything else stays quiet. A range that reads as one body of work from a shelf rather than as six unrelated clients.",
+      "These are six container labels for skincare, food and personal care products. I worked under one rule across all of them: the product name is the loudest thing on the label and everything else stays quiet. It is practice work, but it is the part of my portfolio that is not software.",
     tags: ["Photoshop", "Illustrator", "Typography", "Packaging", "Print"],
     meta: [
       { label: "SCOPE", value: "Container &amp; Jar Labels" },
       { label: "TOOLS", value: "Photoshop &amp; Illustrator" },
       { label: "PIECES", value: "6 label designs" },
-      { label: "DISCIPLINE", value: "Visual Identity &amp; Typography" }
+      { label: "DISCIPLINE", value: "Typography &amp; Composition" }
     ],
     stats: [
       { value: "06", label: "Works" },
@@ -501,36 +643,79 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "problem",
+        id: "idea",
         num: "01",
-        heading: "Hierarchy in a Very Small Box",
+        heading: "The Idea",
         body: [
-          "A label is a hierarchy problem inside a very small area. Three kinds of information compete for the same few square centimetres: the product name, the supporting claims that justify it, and the mandatory copy that has to be present without being read at arm's length.",
-          "Most label work fails by treating all three as equally important. Everything is legible, nothing is first. The fix is not more space or smaller type &mdash; it is deciding which of the three gets to be the loudest voice and committing to it."
+,
+          "I wanted to practise typography at a genuinely small size. Most of what I do visually is on screens, where there is always more room, so a label was a useful constraint — a few square centimetres where everything competes for attention.",
+,
+          "I picked six products across skincare, food and personal care so the set had to hold together as a range rather than as six unrelated designs."
+,
         ]
       },
       {
-        id: "rule",
+        id: "role",
         num: "02",
-        heading: "One Dominant Treatment Per Label",
+        heading: "My Role",
         body: [
-          "Every label in this set uses a single dominant type treatment. The product name carries the personality; the supporting claims are set quieter, usually smaller and tracked looser; the mandatory copy sits at the edge of legibility.",
-          "That single rule is what makes six labels from three different product categories read as one range. The palettes differ because the products differ, but the hierarchy does not &mdash; so a shelf of them looks systematic instead of accidental."
+,
+          "Concept, typography, colour and the final artwork, all in Photoshop and Illustrator. I did not use any templates — every label was built from scratch.",
+,
+          "I also worked at the real printed size instead of designing at screen size and hoping it would survive."
+,
         ]
       },
       {
-        id: "small-format",
+        id: "process",
         num: "03",
-        heading: "Set Smaller Than Instinct Suggests",
+        heading: "The Process",
         body: [
-          "Label scale punishes timid typography. Type set at the size instinct suggests is usually too large, because it crowds out the supporting copy that has to share the space. Working small means setting the display type tighter and the supporting type looser than feels natural.",
-          "The result is labels that hold their hierarchy at printed size, which is the only size that matters once the artwork is on a bottle or a jar."
+,
+          "I worked out the information order first: product name, then supporting claims, then the small mandatory copy. Once that order was fixed, the type sizes followed from it rather than the other way around.",
+,
+          "I reused the same margin logic and the same restrained palette across all six so they read as a set when lined up on a shelf."
+,
+        ]
+      },
+      {
+        id: "design",
+        num: "04",
+        heading: "Design",
+        body: [
+,
+          "Each label got one dominant type treatment, and the rest of the composition stayed quiet around it. Small labels fail when everything is shouting, so most of the work was deciding what to leave out.",
+,
+          "Legibility won over decoration throughout. If a claim could not be read clearly at actual size, it went smaller or came out."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "05",
+        heading: "Result",
+        body: [
+,
+          "Six finished labels across three product categories. I checked every one both at printed size and as a thumbnail, because a label on a shelf is often seen from a step back before it is read properly."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "06",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned that constraints help. Working inside a fixed small format made me decide faster than a blank canvas does.",
+,
+          "I also stopped making sets where every piece is slightly different. Consistency turned out to be most of what makes a range look intentional rather than random."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "What This Range Covers",
+      heading: "What Is In The Set",
       groups: [
         {
           role: "Products",
@@ -566,7 +751,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "This section carries no access controls &mdash; it is a public design portfolio entry.",
+      "There is nothing access-controlled on this one. It is design work, so this is just the process behind it.",
     security: [
       "Original artwork only, no stock templates",
       "Original design files retained per label",
@@ -587,9 +772,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "How the Range Was Built",
+      heading: "How I Built These",
       body:
-        "Each label was built against the constraint that actually governs small-format work rather than against a generic standard: hierarchy read at the real printed size. Three information tiers were held in order on every piece &mdash; product name, supporting claims, mandatory copy &mdash; and the same margin logic was reused so the range stays consistent.",
+        "I built each label around the thing that actually governs small-format work: hierarchy that reads at the real printed size. Three information tiers stayed in order on every piece, and the same margin logic was reused so the set holds together.",
       head: ["ID", "Element", "Criterion", "Approach"],
       rows: [
         ["L01", "Hierarchy order", "Three tiers legible in order", "Enforced on all six"],
@@ -597,7 +782,7 @@ const PROJECTS = {
         ["L03", "Claim legibility", "Readable without competing", "Smaller, tracked looser"],
         ["L04", "Palette logic", "Range reads as one set", "Held across categories"],
         ["L05", "Margin system", "Consistent between labels", "Reused grid"]
-      ]
+      ],
     },
 
     roadmap: [
@@ -629,13 +814,13 @@ const PROJECTS = {
     eyebrow: ["Large Format", "Campaign Typography"],
     category: "Promotional Poster Design",
     summary:
-      "Seven promotional posters spanning product launches, beauty campaigns and institutional announcements. Each one has a single job: stop someone walking, hold them long enough to deliver one idea, and survive being photographed on a phone and read later as a thumbnail.",
+      "These are seven posters for product launches, beauty campaigns and institutional announcements. Each one has a single job: stop someone walking, hold them long enough to get one idea across, and still work when someone photographs it on a phone. Design practice rather than client work.",
     tags: ["Photoshop", "Illustrator", "Typography", "Posters", "Print"],
     meta: [
       { label: "SCOPE", value: "Product, Event &amp; Institutional" },
       { label: "TOOLS", value: "Photoshop &amp; Illustrator" },
       { label: "PIECES", value: "7 poster designs" },
-      { label: "DISCIPLINE", value: "Typography &amp; Composition" }
+      { label: "DISCIPLINE", value: "Typography &amp; Layout" }
     ],
     stats: [
       { value: "07", label: "Works" },
@@ -652,36 +837,79 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "distance",
+        id: "idea",
         num: "01",
-        heading: "A Poster Is a Distance Problem",
+        heading: "The Idea",
         body: [
-          "A poster is judged at three metres before it is judged at thirty centimetres. It has to interrupt a moving person, hold attention long enough to deliver a single idea, and then get out of the way.",
-          "That distance changes what design decisions matter. Type that looks refined and elegant on screen is invisible on a wall. Contrast, scale and a single focal point do nearly all of the work; everything else is detail that only pays off once someone has already stopped."
+,
+          "I wanted to practise designing for distance. On a screen you can always add another element, but a poster has one job and only a few seconds to do it.",
+,
+          "I made seven of them across product launches, beauty campaigns and institutional announcements so I could test the same approach against different subject matter."
+,
         ]
       },
       {
-        id: "one-idea",
+        id: "role",
         num: "02",
-        heading: "One Piece, One Focal Point",
+        heading: "My Role",
         body: [
-          "Every poster in this set resolves to one focal point. On the herbal skincare and purity-led beauty pieces that is the product; on the editorial and institutional announcements it is the headline block.",
-          "One focal point is not a limitation, it is the reason the other elements survive. A second competing centre turns a poster into a page &mdash; legible, but only to someone already standing in front of it."
+,
+          "Everything on these is mine: concept, typography, layout and the final files, in Photoshop and Illustrator. No stock templates were used.",
+,
+          "I exported each one at large format and checked it again after reducing it, because that is usually how a poster gets seen first."
+,
         ]
       },
       {
-        id: "formats",
+        id: "process",
         num: "03",
-        heading: "Campaign, Event, Institution",
+        heading: "The Process",
         body: [
-          "The set covers three brief types. Product launches need the pack shot to carry the persuasion. Beauty campaigns lead with typography and mood. Institutional announcements need the date and the issuing body to be unmissable without becoming the whole design.",
-          "The same underlying system handles all three because the focal-point rule is format-independent: decide what the poster is about, give it the largest element on the sheet, and set everything else in support of it."
+,
+          "I picked one focal point per poster before I placed anything else, then built the type hierarchy around it. Deciding the focus first stopped me from adding elements out of habit later.",
+,
+          "I kept the same margin logic across the set so the seven of them read as one body of work instead of seven unrelated sheets."
+,
+        ]
+      },
+      {
+        id: "design",
+        num: "04",
+        heading: "Design",
+        body: [
+,
+          "Type was sized for the viewing distance rather than for the page. I worked at full size, then scaled the whole composition down and checked whether it still held together.",
+,
+          "Contrast did most of the work. Where a sheet felt weak I changed the contrast before adding anything new to it."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "05",
+        heading: "Result",
+        body: [
+,
+          "Seven finished posters across three categories. Each one was checked at full size, at thumbnail size and printed small, and the composition was adjusted until it survived all three."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "06",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned to reduce a composition before adding to it. Most of my early posters had too many competing elements and the fix was subtraction, not more design.",
+,
+          "I also started treating a set as a set. Reusing margin and scale logic across pieces made them look related without me having to force it."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "What the Poster Set Covers",
+      heading: "What Is In The Set",
       groups: [
         {
           role: "Categories",
@@ -717,7 +945,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "This section carries no access controls &mdash; it is a public design portfolio entry.",
+      "There is nothing access-controlled on this one. It is design work, so this is just the process behind it.",
     security: [
       "Original artwork only, no stock templates",
       "Original design files retained per poster",
@@ -738,9 +966,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "How the Posters Were Built",
+      heading: "How I Built These",
       body:
-        "Each poster was built around the viewing distance that actually governs it rather than against a generic standard: type sized to register from across a room, then re-checked at thumbnail scale because that is how most posters are first encountered. One focal point was held per composition and the same margin logic was reused across the set.",
+        "I built each poster around the viewing distance that actually governs it: type sized to register from across a room, then re-checked at thumbnail scale, because that is how most posters are first seen. One focal point per composition, and the same margin logic across the set.",
       head: ["ID", "Element", "Criterion", "Approach"],
       rows: [
         ["P01", "Display scale", "Type registers at distance", "Enforced on all seven"],
@@ -748,7 +976,7 @@ const PROJECTS = {
         ["P03", "Thumbnail read", "Silhouette survives reduction", "Checked per composition"],
         ["P04", "Contrast", "Sheet separates from the wall", "Value over decoration"],
         ["P05", "Margin logic", "Consistent between posters", "Reused grid"]
-      ]
+      ],
     },
 
     roadmap: [
@@ -781,13 +1009,13 @@ const PROJECTS = {
     eyebrow: ["Streetwear", "Production Craft"],
     category: "Apparel &amp; Streetwear Print Design",
     summary:
-      "Nine apparel prints spanning institutional references and streetwear graphics. Built from bold shapes and heavy type, because the canvas is irregular, the fabric distorts and the garment moves &mdash; anything depending on a hairline detail dies in production.",
+      "These are nine prints for garments, across institutional references and streetwear graphics. Bold shapes and heavy type, because the canvas is irregular, the fabric distorts and the garment moves — anything depending on a hairline detail dies in production. Design practice rather than client work.",
     tags: ["Photoshop", "Typography", "Apparel", "Streetwear", "Print"],
     meta: [
       { label: "SCOPE", value: "Streetwear &amp; Institutional" },
       { label: "TOOLS", value: "Photoshop &amp; Illustrator" },
       { label: "PIECES", value: "9 apparel prints" },
-      { label: "DISCIPLINE", value: "Graphic Composition for Garments" }
+      { label: "DISCIPLINE", value: "Graphic Design for Garments" }
     ],
     stats: [
       { value: "09", label: "Works" },
@@ -804,36 +1032,79 @@ const PROJECTS = {
 
     sections: [
       {
-        id: "canvas",
+        id: "idea",
         num: "01",
-        heading: "An Irregular Canvas That Moves",
+        heading: "The Idea",
         body: [
-          "Apparel print is the harshest test a graphic idea faces. The surface is irregular, the fabric distorts around a body, and the whole thing moves every time the wearer does. A composition that works perfectly as a flat rectangle stops working the moment it is stitched.",
-          "Hairlines break. Small text disappears into the weave. Centred compositions drift once the garment is worn rather than laid flat. Designing for apparel means accepting all three from the start rather than discovering them at the sampling stage."
+,
+          "Clothing is a harder canvas than a screen. The fabric distorts, the garment moves, and anything built on a hairline detail tends to disappear in production.",
+,
+          "I wanted to test whether I could design something that survives being stitched, washed and printed again, so I made nine prints across institutional and streetwear references."
+,
         ]
       },
       {
-        id: "bold",
+        id: "role",
         num: "02",
-        heading: "Bold Shapes and Heavy Type",
+        heading: "My Role",
         body: [
-          "Everything in this set is built from forms that survive reproduction: solid shapes, heavy type, hard edges. Nothing depends on a delicate detail being resolved by eye, because in production nobody will be looking closely enough.",
-          "Working with a restricted palette and a small number of forms produced more distinctive results than a full-colour brief would have. The constraint removed the option of hiding a weak composition behind detail."
+,
+          "I drew every print and prepared the files for production, in Photoshop and Illustrator. Nothing here came from a template.",
+,
+          "I worked with the garment in mind throughout — which shapes had to hold when the fabric folded, and which type would survive being washed."
+,
         ]
       },
       {
-        id: "themes",
+        id: "process",
         num: "03",
-        heading: "Institutional and Streetwear",
+        heading: "The Process",
         body: [
-          "The archive splits into two themes. The institutional references &mdash; collegiate and school marks &mdash; need authority and legibility at garment scale, and lean on heraldic structure and heavy lettering.",
-          "The streetwear prints take the opposite route: aggressive cropping, oversized type and blunt single-colour graphics. Both are working the same constraint, garment scale, from opposite directions."
+,
+          "I built each print from large shapes first and added detail only where it would still read. Working small and adding precision early is what makes garment prints fall apart.",
+,
+          "I tested each one by reducing it and imagining it on fabric, since the reduction is closer to what a screen print actually produces than the artwork on my monitor."
+,
+        ]
+      },
+      {
+        id: "design",
+        num: "04",
+        heading: "Design",
+        body: [
+,
+          "Bold shapes and heavy type, because both survive reproduction. If it needed a thin line or a small detail to work, it was probably too subtle for a garment.",
+,
+          "Institutional pieces use structure and grid, while the streetwear references lean on heavier shapes and looser type. Keeping those two languages separate made each set feel intentional."
+,
+        ]
+      },
+      {
+        id: "result",
+        num: "05",
+        heading: "Result",
+        body: [
+,
+          "Nine finished prints across two directions, each checked at garment scale rather than as flat artwork on a screen."
+,
+        ]
+      },
+      {
+        id: "learned",
+        num: "06",
+        heading: "What I Learned",
+        body: [
+,
+          "I learned that the medium decides the design. Working for fabric made me simplify automatically, which is a habit I have carried back into my UI work.",
+,
+          "I also noticed I enjoy this kind of work most when I can see the constraint clearly. Blank canvas briefs are much harder for me than a rule to push against."
+,
         ]
       }
     ],
 
     featureGrid: {
-      heading: "What the Print Set Covers",
+      heading: "What Is In The Set",
       groups: [
         {
           role: "Themes",
@@ -869,7 +1140,7 @@ const PROJECTS = {
     },
 
     securityNote:
-      "This section carries no access controls &mdash; it is a public design portfolio entry.",
+      "There is nothing access-controlled on this one. It is design work, so this is just the process behind it.",
     security: [
       "Original artwork only, no stock templates",
       "Original design files retained per print",
@@ -890,9 +1161,9 @@ const PROJECTS = {
     },
 
     tests: {
-      heading: "How the Prints Were Built",
+      heading: "How I Built These",
       body:
-        "Each print was built against the constraint that actually governs garment work rather than against a generic standard: legibility while the garment is moving, and reproduction at press threshold. Forms were kept to a small number of solid shapes per print, and the palette limited so the separation work stays practical.",
+        "I built each print around the thing that actually governs garment work: staying legible while the garment is worn, washed and reproduced. I checked every print at garment scale, not just flat on the monitor.",
       head: ["ID", "Element", "Criterion", "Approach"],
       rows: [
         ["A01", "Form count", "Few enough shapes to hold", "Limited per print"],
@@ -900,7 +1171,7 @@ const PROJECTS = {
         ["A03", "Detail threshold", "Survives production minimum", "Hairlines removed"],
         ["A04", "Palette", "Separation stays practical", "One dominant colour"],
         ["A05", "Placement logic", "Reads on the garment, not flat", "Set to garment panels"]
-      ]
+      ],
     },
 
     roadmap: [
